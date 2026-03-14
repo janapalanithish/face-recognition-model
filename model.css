@@ -1,0 +1,60 @@
+body {
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f0f2f5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.container {
+    background: white;
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    text-align: center;
+    width: 400px;
+}
+
+h2 { color: #1a73e8; }
+
+#webcam-container {
+    border: 4px solid #e8eaed;
+    border-radius: 12px;
+    overflow: hidden;
+    background: #000;
+    position: relative;
+    margin-bottom: 15px;
+}
+
+#status-badge {
+    padding: 10px;
+    border-radius: 30px;
+    font-weight: bold;
+    background: #f1f3f4;
+    transition: 0.3s;
+}
+
+.detected { background: #e6f4ea !important; color: #1e8e3e !important; }
+
+button {
+    background-color: #1a73e8;
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.probability-bar {
+    height: 6px;
+    background: #eee;
+    margin-top: 5px;
+}
+
+.probability-fill {
+    height: 100%;
+    background: #1a73e8;
+    width: 0%;
+}
