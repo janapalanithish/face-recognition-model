@@ -1,74 +1,103 @@
-const URL = "https://teachablemachine.withgoogle.com/models/3k23_bDk7/";
-let model, webcam, labelContainer, maxPredictions;
+// REPLACE THIS CONFIG WITH YOUR OWN FROM FIREBASE SETTINGS
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "ai-nexus.firebaseapp.com",
+  projectId: "ai-nexus",
+  storageBucket: "ai-nexus.appspot.com",
+  messagingSenderId: "...",
+  appId: "..."
+};
 
-// This list keeps track of who has already entered
-let verifiedUsers = [];
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-// Wait for the button to be ready
-document.getElementById("start-btn").addEventListener("click", init);
+const video = document.getElementById('video');
+const statusBadge = document.getElementById('status-badge');
 
-async function init() {
-    const startBtn = document.getElementById("start-btn");
-    const statusBadge = document.getElementById("status-badge");
-    
-    startBtn.style.display = "none";
-    statusBadge.innerHTML = "Initializing AI...";
-
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
-
-    model = await tmImage.load(modelURL, metadataURL);
-    maxPredictions = model.getTotalClasses();
-
-    webcam = new tmImage.Webcam(350, 350, true); 
-    await webcam.setup();
-    await webcam.play();
-    
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
-    statusBadge.innerHTML = "System Ready: Scan Face";
-    
-    window.requestAnimationFrame(loop);
+// 1. Load Face-API Models from Web Links
+async function loadModels() {
+    statusBadge.innerText = "Loading AI Brain...";
+    const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+    await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+    await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+    statusBadge.innerText = "System Online";
 }
 
-async function loop() {
-    webcam.update();
-    await predict();
-    window.requestAnimationFrame(loop);
+// 2. Access Camera
+async function startVideo() {
+    navigator.mediaDevices.getUserMedia({ video: {} })
+        .then(stream => video.srcObject = stream)
+        .catch(err => console.error("Camera Error:", err));
 }
 
-async function predict() {
-    const prediction = await model.predict(webcam.canvas);
-    const statusBadge = document.getElementById("status-badge");
+// 3. REGISTRATION LOGIC
+document.getElementById('register-btn').addEventListener('click', async () => {
+    const name = document.getElementById('user-name').value;
+    if (!name) return alert("Please enter a name first!");
 
-    for (let i = 0; i < maxPredictions; i++) {
-        const name = prediction[i].className;
-        const probability = prediction[i].probability;
+    statusBadge.innerText = "Scanning face...";
+    const detection = await faceapi.detectSingleFace(video).withFaceLandmarks().withFaceDescriptor();
 
-        // If high confidence (over 95%)
-        if (probability > 0.95) {
-            
-            // Check if user is already in the "Verified" list
-            if (verifiedUsers.includes(name)) {
-                statusBadge.innerHTML = `ALREADY ENTERED: ${name}`;
-                statusBadge.className = "access-denied";
-            } 
-            else if (name !== "Background" && name !== "Nothing") {
-                statusBadge.innerHTML = `ACCESS GRANTED: ${name}`;
-                statusBadge.className = "access-granted";
-                
-                // Add to list and update log
-                verifiedUsers.push(name);
-                addToLog(name);
-            }
-            return; // Exit loop once we find a match
-        }
+    if (detection) {
+        // Convert the face math (descriptor) into a normal list of numbers
+        const faceArray = Array.from(detection.descriptor);
+        
+        // Save to Firebase Firestore
+        await db.collection("users").add({
+            name: name,
+            descriptor: faceArray,
+            hasEntered: false // Default to false
+        });
+
+        statusBadge.innerText = `Registered: ${name}`;
+        statusBadge.className = "success";
+        document.getElementById('user-name').value = ""; // Clear input
+    } else {
+        statusBadge.innerText = "No face detected. Try again.";
+        statusBadge.className = "error";
     }
-}
+});
 
-function addToLog(name) {
-    const logList = document.getElementById("log-list");
-    const entry = document.createElement("li");
-    const time = new Date().toLocaleTimeString();
-    entry.innerHTML = `<strong>${name}</strong> - Entered at ${time}`;
-    logList.prepend(entry); // Adds the newest entry to the top
-}
+// 4. VERIFICATION LOGIC (Single Entry Check)
+document.getElementById('verify-btn').addEventListener('click', async () => {
+    statusBadge.innerText = "Verifying...";
+    const detection = await faceapi.detectSingleFace(video).withFaceLandmarks().withFaceDescriptor();
+
+    if (!detection) return alert("Please look at the camera.");
+
+    // Fetch all registered users from Firebase
+    const snapshot = await db.collection("users").get();
+    let bestMatch = { name: "Unknown", distance: 1.0, id: null, hasEntered: false };
+
+    snapshot.forEach(doc => {
+        const userData = doc.data();
+        // Math: Compare current face with stored face
+        const distance = faceapi.euclideanDistance(detection.descriptor, userData.descriptor);
+        
+        // Threshold: 0.45 (lower is more strict)
+        if (distance < 0.45 && distance < bestMatch.distance) {
+            bestMatch = { name: userData.name, distance: distance, id: doc.id, hasEntered: userData.hasEntered };
+        }
+    });
+
+    if (bestMatch.name !== "Unknown") {
+        if (bestMatch.hasEntered) {
+            statusBadge.innerText = `DENIED: ${bestMatch.name} has already entered!`;
+            statusBadge.className = "error";
+        } else {
+            statusBadge.innerText = `APPROVED: Welcome, ${bestMatch.name}!`;
+            statusBadge.className = "success";
+            
+            // UPDATE FIREBASE: Mark as entered so they can't come back
+            await db.collection("users").doc(bestMatch.id).update({ hasEntered: true });
+        }
+    } else {
+        statusBadge.innerText = "ACCESS DENIED: User not found.";
+        statusBadge.className = "error";
+    }
+});
+
+// Run everything
+loadModels().then(startVideo);

@@ -1,53 +1,10 @@
-body {
-    font-family: 'Inter', system-ui, sans-serif;
-    background-color: #f8f9fa;
-    display: flex;
-    justify-content: center;
-    padding: 20px;
-}
-
-.container {
-    background: white;
-    padding: 30px;
-    border-radius: 20px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-    width: 100%;
-    max-width: 450px;
-    text-align: center;
-}
-
-#webcam-container canvas {
-    border-radius: 15px;
-    border: 3px solid #dee2e6;
-    max-width: 100%;
-}
-
-#status-badge {
-    margin: 20px 0;
-    padding: 12px;
-    border-radius: 50px;
-    font-weight: bold;
-    background: #eee;
-    transition: 0.3s;
-}
-
-.access-granted { background: #d4edda !important; color: #155724; border: 1px solid #c3e6cb; }
-.access-denied { background: #f8d7da !important; color: #721c24; border: 1px solid #f5c6cb; }
-
-button {
-    width: 100%;
-    padding: 15px;
-    background: #007bff;
-    color: white;
-    border: none;
-    border-radius: 10px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#history-log {
-    text-align: left;
-    margin-top: 20px;
-    border-top: 1px solid #eee;
-    font-size: 14px;
-}
+body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+.container { background: white; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); width: 420px; text-align: center; }
+.sector { margin-bottom: 25px; padding: 10px; }
+input { padding: 12px; width: 85%; margin-bottom: 15px; border-radius: 8px; border: 1px solid #ddd; font-size: 16px; }
+button { padding: 12px 25px; cursor: pointer; background: #1a73e8; color: white; border: none; border-radius: 8px; font-weight: bold; width: 90%; }
+button:hover { background: #1557b0; }
+#video-wrapper { background: #000; border-radius: 12px; margin: 15px auto; overflow: hidden; width: 320px; height: 240px; border: 3px solid #e8eaed; }
+#status-badge { margin-top: 15px; font-weight: bold; padding: 15px; border-radius: 8px; background: #f1f3f4; color: #5f6368; }
+.success { background: #e6f4ea !important; color: #1e8e3e !important; }
+.error { background: #fce8e6 !important; color: #d93025 !important; }
