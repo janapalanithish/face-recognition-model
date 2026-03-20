@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Live Face Detection - AI Smart Entry</title>
+    <link rel="stylesheet" href="model.css">
+</head>
+<body>
+    <nav class="main-nav">
+        <a href="index.html">Back to Home</a>
+    </nav>
+
+    <div class="container">
+        <h1>Face Verification Scanner</h1>
+        <div id="registration-sector" class="sector">
+            <input type="text" id="user-name" placeholder="Enter Full Name">
+            <button id="register-btn">Register My Face</button>
+        </div>
+        <hr>
+        <div id="verification-sector" class="sector">
+            <div id="video-wrapper">
+                <video id="video" width="320" height="240" autoplay muted></video>
+            </div>
+            <div id="status-badge">System Ready</div>
+            <button id="verify-btn">Start Verification</button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
+    <script src="model.js"></script>
+</body>
+</html>
