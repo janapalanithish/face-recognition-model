@@ -7,29 +7,46 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <nav class="main-nav">
-        <a href="index.html">Back to Home</a>
-    </nav>
+    <body>
 
-    <div class="container">
-        <h1>Face Verification Scanner</h1>
-        <div id="registration-sector" class="sector">
-            <input type="text" id="user-name" placeholder="Enter Full Name">
-            <button id="register-btn">Register My Face</button>
-        </div>
-        <hr>
-        <div id="verification-sector" class="sector">
-            <div id="video-wrapper">
-                <video id="video" width="320" height="240" autoplay muted></video>
-            </div>
-            <div id="status-badge">System Ready</div>
-            <button id="verify-btn">Start Verification</button>
-        </div>
-    </div>
+<nav class="navbar">
+<div class="logo">FaceAI</div>
+<div class="nav-links">
+<a href="index.html">Home</a>
+</div>
+</nav>
 
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/face-api.js@0.22.2/dist/face-api.min.js"></script>
-    <script src="model.js"></script>
+<div class="container">
+
+<h1>AI Smart Entry System</h1>
+
+<!-- REGISTER -->
+<div class="card">
+<h2>Register New User</h2>
+<p>Enter your name and look at the camera to register.</p>
+
+<input type="text" id="user-name" placeholder="Enter Full Name">
+<button id="register-btn">Register My Face</button>
+</div>
+
+<hr>
+
+<!-- VERIFY -->
+<div class="card">
+<h2>Verification Scanner</h2>
+
+<div id="video-wrapper">
+<video id="video" autoplay muted></video>
+</div>
+
+<div id="status-badge">System Ready</div>
+
+<button id="verify-btn">Start Verification</button>
+</div>
+
+</div>
+
+<script src="model.js"></script>
+
 </body>
 </html>
