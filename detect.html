@@ -1,3 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Face Detection</title>
+
+<link rel="stylesheet" href="styles.css">
+</head>
+
 <body class="detect-page">
 
 <nav class="navbar">
@@ -18,6 +28,9 @@
 
         <input type="text" id="user-name" class="detect-input" placeholder="Enter Full Name">
 
+        <!-- 🔥 ADD THIS BUTTON -->
+        <button id="start-camera" class="detect-btn">Start Camera</button>
+
         <button id="register-btn" class="detect-btn">
             Register My Face
         </button>
@@ -32,7 +45,7 @@
         </div>
 
         <div id="status-badge" class="status-box">
-            System Ready
+            Loading...
         </div>
 
         <button id="verify-btn" class="detect-btn">
@@ -41,3 +54,14 @@
     </div>
 
 </div>
+
+<!-- 🔥 REQUIRED SCRIPTS (YOU MISSED THESE) -->
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
+
+<!-- YOUR JS -->
+<script src="model.js"></script>
+
+</body>
+</html>
