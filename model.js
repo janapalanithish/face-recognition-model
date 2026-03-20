@@ -1,122 +1,91 @@
-const firebaseConfig = {
-  apiKey: "AIzaSyDfMS7ZLuC7F-Tts4YSfiPI-Cp0yOH5xdU",
-  authDomain: "my-project-5cb14.firebaseapp.com",
-  projectId: "my-project-5cb14",
-};
-
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+// 1. UPDATE THESE WITH YOUR DETAILS FROM SUPABASE SETTINGS
+const SUPABASE_URL = 'YOUR_SUPABASE_URL';
+const SUPABASE_KEY = 'YOUR_SUPABASE_ANON_KEY';
+const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const video = document.getElementById('video');
-const statusBadge = document.getElementById('status-badge');
+const status = document.getElementById('status-badge');
 
-let cameraStarted = false;
-
-// 🔥 FAST MODEL
+// Load AI Models from CDN
 async function loadModels() {
-    statusBadge.innerText = "Loading Fast AI Model...";
-
-    const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
-
-    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+    status.innerText = "Loading AI Models...";
+    const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
     await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
     await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-
-    statusBadge.innerText = "System Ready";
+    status.innerText = "AI Ready";
 }
 
-// CAMERA START
-document.getElementById('start-camera').addEventListener('click', async () => {
+// Start Video Stream
+async function startVideo() {
+    navigator.getUserMedia({ video: {} }, 
+        stream => video.srcObject = stream, 
+        err => console.error(err)
+    );
+}
 
-    if (cameraStarted) return;
-
-    try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-
-        video.srcObject = stream;
-
-        video.onloadedmetadata = () => {
-            video.play();
-        };
-
-        cameraStarted = true;
-        statusBadge.innerText = "Camera Active";
-
-    } catch (err) {
-        statusBadge.innerText = "Permission Denied";
-    }
-});
-
-// REGISTER
+// SECTOR 1: REGISTRATION LOGIC
 document.getElementById('register-btn').addEventListener('click', async () => {
-
-    if (!cameraStarted) return alert("Start camera first");
-
     const name = document.getElementById('user-name').value;
-    if (!name) return alert("Enter name");
+    if (!name) return alert("Please enter a name");
 
-    statusBadge.innerText = "Scanning...";
+    status.innerText = "Capturing Face...";
+    const detection = await faceapi.detectSingleFace(video).withFaceLandmarks().withFaceDescriptor();
 
-    const detection = await faceapi
-        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptor();
+    if (detection) {
+        // Convert the 128 numbers (Float32Array) to a regular Array for Supabase
+        const faceArray = Array.from(detection.descriptor);
+        
+        const { error } = await supabase.from('profiles').insert([
+            { name: name, face_embedding: faceArray }
+        ]);
 
-    if (!detection) {
-        statusBadge.innerText = "No face detected";
-        return;
+        if (error) {
+            status.innerText = "Error saving to Database";
+        } else {
+            status.innerText = "Registration Successful!";
+            status.className = "success";
+        }
+    } else {
+        alert("Face not detected. Try again.");
     }
-
-    await db.collection("users").add({
-        name,
-        descriptor: Array.from(detection.descriptor),
-        hasEntered: false
-    });
-
-    statusBadge.innerText = "Registered";
 });
 
-// VERIFY
+// SECTOR 2: VERIFICATION LOGIC (The Scanner)
 document.getElementById('verify-btn').addEventListener('click', async () => {
+    status.innerText = "Scanning...";
+    const detection = await faceapi.detectSingleFace(video).withFaceLandmarks().withFaceDescriptor();
 
-    if (!cameraStarted) return alert("Start camera first");
+    if (!detection) return alert("No face seen");
 
-    statusBadge.innerText = "Verifying...";
+    // Get all registered faces from Supabase
+    const { data: registeredUsers, error } = await supabase.from('profiles').select('*');
 
-    const detection = await faceapi
-        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
-        .withFaceLandmarks()
-        .withFaceDescriptor();
+    let bestMatch = { name: "Unknown", distance: 1.0 };
 
-    if (!detection) {
-        statusBadge.innerText = "No face detected";
-        return;
-    }
-
-    const snapshot = await db.collection("users").get();
-
-    let bestMatch = { distance: 1 };
-
-    snapshot.forEach(doc => {
-        const data = doc.data();
-
-        const dist = faceapi.euclideanDistance(
-            detection.descriptor,
-            data.descriptor
-        );
-
-        if (dist < 0.5 && dist < bestMatch.distance) {
-            bestMatch = { ...data, distance: dist };
+    registeredUsers.forEach(user => {
+        // Use Euclidean Distance to compare (lower is better)
+        const dist = faceapi.euclideanDistance(detection.descriptor, user.face_embedding);
+        if (dist < 0.45 && dist < bestMatch.distance) {
+            bestMatch = { ...user, distance: dist };
         }
     });
 
-    if (!bestMatch.name) {
-        statusBadge.innerText = "Access Denied";
-        return;
+    if (bestMatch.name !== "Unknown") {
+        if (bestMatch.has_entered) {
+            status.innerText = `CAUGHT! ${bestMatch.name} already entered!`;
+            status.className = "error";
+        } else {
+            status.innerText = `WELCOME, ${bestMatch.name}!`;
+            status.className = "success";
+            // Mark as entered so they can't come back
+            await supabase.from('profiles').update({ has_entered: true }).eq('id', bestMatch.id);
+        }
+    } else {
+        status.innerText = "Access Denied: Unknown User";
+        status.className = "error";
     }
-
-    statusBadge.innerText = `Welcome ${bestMatch.name}`;
 });
 
-// INIT
-loadModels();
+// Run on load
+loadModels().then(startVideo);
