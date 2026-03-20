@@ -13,13 +13,13 @@ const statusBadge = document.getElementById('status-badge');
 
 let cameraStarted = false;
 
-// 🔥 LOAD FAST MODEL (OPTIMIZED)
+// 🔥 LOAD SSD MODEL (ACCURATE)
 async function loadModels() {
     statusBadge.innerText = "Loading AI Model...";
 
     const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
 
-    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
     await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
     await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
 
@@ -45,19 +45,14 @@ document.getElementById('start-camera').addEventListener('click', async () => {
 
     } catch (err) {
         statusBadge.innerText = "❌ Permission Denied";
+        console.error(err);
     }
 });
 
-// 🔍 COMMON DETECTION FUNCTION (FASTER + STABLE)
+// 🔍 DETECTION FUNCTION (SSD)
 async function getFaceDescriptor() {
     return await faceapi
-        .detectSingleFace(
-            video,
-            new faceapi.TinyFaceDetectorOptions({
-                inputSize: 224,
-                scoreThreshold: 0.5
-            })
-        )
+        .detectSingleFace(video) // ✅ SSD default
         .withFaceLandmarks()
         .withFaceDescriptor();
 }
@@ -86,9 +81,11 @@ document.getElementById('register-btn').addEventListener('click', async () => {
     });
 
     statusBadge.innerText = `✅ Registered: ${name}`;
+    statusBadge.style.background = "#d4edda";
+    statusBadge.style.color = "#155724";
 });
 
-// ✅ VERIFY (FIXED LOGIC)
+// ✅ VERIFY (STRICT + ACCURATE)
 document.getElementById('verify-btn').addEventListener('click', async () => {
 
     if (!cameraStarted) return alert("Start camera first");
@@ -117,10 +114,10 @@ document.getElementById('verify-btn').addEventListener('click', async () => {
             data.descriptor
         );
 
-        console.log("Distance:", dist); // 🔥 DEBUG
+        console.log("Distance:", dist); // DEBUG
 
-        // 🔥 FIXED THRESHOLD
-        if (dist < 0.6 && dist < bestMatch.distance) {
+        // 🔥 STRICT MATCH (SSD works best here)
+        if (dist < 0.45 && dist < bestMatch.distance) {
             bestMatch = {
                 name: data.name,
                 distance: dist
