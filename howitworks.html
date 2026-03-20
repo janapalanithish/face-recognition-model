@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Learn how our AI face recognition tool works step by step. Understand detection, processing, and privacy in simple terms.">
+<meta name="keywords" content="how face recognition works, AI face detection process, webcam face recognition explanation">
+<meta name="author" content="[YOUR INPUT NEEDED]">
+<meta property="og:title" content="How Face Recognition Works">
+<meta property="og:description" content="Simple explanation of face recognition technology and how our tool works.">
+<meta property="og:url" content="https://face-recognition-model.vercel.app/how-it-works.html">
+<meta property="og:type" content="website">
+<title>How Face Recognition Works | AI Tool Guide</title>
+<link rel="canonical" href="https://face-recognition-model.vercel.app/how-it-works.html">
+<link rel="stylesheet" href="styles.css">
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const DEMO_MODE = params.get('demo') === 'true';
+window.addEventListener('DOMContentLoaded',()=>{
+if (DEMO_MODE) document.querySelectorAll('.ad-slot').forEach(ad=>ad.style.display='none');
+});
+</script>
+</head>
+
+<body>
+
+<nav class="navbar">
+<div class="logo">FaceAI</div>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="how-it-works.html" class="active">How It Works</a>
+<a href="blog/index.html">Blog</a>
+<a href="faq.html">FAQ</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="privacy-policy.html">Privacy</a>
+</div>
+</nav>
+
+<h1>How Our Face Recognition Tool Works</h1>
+
+<p>
+Face recognition might sound complex, but the idea is simple. Your camera captures your face, an AI model analyzes it, and the system compares it with stored data. All of this happens in seconds directly in your browser.
+</p>
+
+<div class="ad-slot"><!-- AD SLOT MIDDLE --></div>
+
+<h2>What is Face Recognition?</h2>
+<p>
+Face recognition is a technology that identifies or verifies a person using their facial features. Instead of passwords or ID cards, it relies on unique patterns like the distance between eyes, nose shape, and jaw structure. These features are converted into a digital format that can be compared with stored data.
+</p>
+
+<h2>Step by Step Process</h2>
+
+<h3>1. Requesting Camera Permission</h3>
+<p>
+When you open the tool, your browser asks for camera access. This ensures transparency and gives you full control over whether the tool can access your webcam.
+</p>
+
+<h3>2. Capturing the Video Stream</h3>
+<p>
+Once permission is granted, your webcam starts streaming video. The tool continuously reads frames from this stream for processing.
+</p>
+
+<h3>3. AI Model Scans the Frame</h3>
+<p>
+Each frame is analyzed using a trained AI model. It detects whether a human face is present in the image.
+</p>
+
+<h3>4. Face Points and Landmarks Detected</h3>
+<p>
+The system maps key facial landmarks such as eyes, nose, and mouth. These points form a unique mathematical representation.
+</p>
+
+<h3>5. Results Displayed on Screen</h3>
+<p>
+The processed data is compared and results are shown instantly, allowing real-time verification.
+</p>
+
+<h2>Your Data and Privacy</h2>
+<p>
+This tool processes facial data only for detection and verification purposes. Images are not permanently stored unless explicitly saved during registration. Firebase is used for secure storage, and users can delete their data anytime.
+</p>
+
+<h2>Technology We Use</h2>
+<p>
+The system is built using JavaScript and browser-based AI models. Firebase is used for secure storage, while face detection libraries handle real-time processing efficiently without requiring heavy backend servers.
+</p>
+
+<a href="index.html#tool" class="btn">Try It Yourself</a>
+
+<div class="ad-slot"><!-- AD SLOT FOOTER --></div>
+
+<footer>
+<p>© 2026 Face Recognition Tool</p>
+</footer>
+
+</body>
+</html>

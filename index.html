@@ -1,45 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI Smart Entry | Professional Face Recognition</title>
-    <link rel="stylesheet" href="model.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="Free AI-powered face recognition tool. Detect faces instantly using your webcam with real-time processing and secure Firebase integration.">
+<meta name="keywords" content="face recognition tool, AI face detection, webcam face scanner, face API JS, biometric tool">
+<meta name="author" content="Your Name">
+<meta property="og:title" content="AI Face Recognition Tool">
+<meta property="og:description" content="Free AI-powered face recognition tool with real-time detection.">
+<meta property="og:url" content="https://face-recognition-model.vercel.app/">
+<meta property="og:type" content="website">
+<title>AI Face Recognition Tool | Free Online Detector</title>
+<link rel="canonical" href="https://face-recognition-model.vercel.app/">
+<link rel="stylesheet" href="model.css">
+
+<script>
+// Ad visibility control
+const params = new URLSearchParams(window.location.search);
+const DEMO_MODE = params.get('demo') === 'true';
+window.addEventListener('DOMContentLoaded',()=>{
+if (DEMO_MODE) {
+document.querySelectorAll('.ad-slot').forEach(ad=>ad.style.display='none');
+}
+});
+</script>
 </head>
+
 <body>
-    <nav class="main-nav">
-        <a href="index.html">Home</a>
-        <a href="detect.html" class="special-btn">Launch Detector</a>
-        <a href="how-it-works.html">How It Works</a>
-        <a href="faq.html">FAQ</a>
-    </nav>
 
-    <div class="hero-section">
-        <h1>Advanced AI Smart Entry System</h1>
-        <p>Securing the future, one face at a time.</p>
-        <a href="detect.html" class="cta-button">Try Live Detection</a>
-    </div>
+<!-- NAVBAR -->
+<nav class="navbar">
+<div class="logo">FaceAI</div>
+<div class="nav-links">
+<a href="index.html" class="active">Home</a>
+<a href="how-it-works.html">How It Works</a>
+<a href="blog/index.html">Blog</a>
+<a href="faq.html">FAQ</a>
+<a href="about.html">About</a>
+<a href="contact.html">Contact</a>
+<a href="privacy-policy.html">Privacy</a>
+</div>
+</nav>
 
-    <div class="content-container">
-        <h2>What Problem Does This Solve?</h2>
-        <p>Traditional security measures like physical keys, plastic ID cards, and passwords are increasingly vulnerable to theft, loss, and "buddy punching." In 2026, the need for contactless, biometric-driven security is higher than ever. Our AI Smart Entry System eliminates these risks by using the most unique password you own: <strong>your face</strong>.</p>
-        
-        <p>This project leverages high-level Machine Learning (SSD MobileNet V1) to create a "digital signature" of your facial landmarks. This ensures that only authorized individuals gain access to sensitive areas, providing a seamless experience for users while maintaining a robust defense against unauthorized entry.</p>
+<div class="ad-slot"><!-- AD SLOT 1 --></div>
 
-        <h3>Key Applications</h3>
-        <ul>
-            <li><strong>Office Attendance:</strong> Automated check-ins without touching a device.</li>
-            <li><strong>Restricted Access:</strong> Only verified personnel can "unlock" the system.</li>
-            <li><strong>KYC Verification:</strong> Instantly verify identities for digital services.</li>
-        </ul>
-        
-        <p>Built as a final year engineering project in Visakhapatnam, this tool demonstrates how Firebase Cloud integration and Javascript-based AI can work together to provide real-world security solutions in milliseconds.</p>
-    </div>
+<!-- HERO -->
+<section class="hero">
+<h1>AI-Powered Face Recognition — Instant, Accurate, Free</h1>
+<p>
+This tool lets you detect and verify faces instantly using your webcam. Built using modern AI models and real-time processing, it delivers fast and reliable results without requiring downloads, accounts, or complex setup.
+</p>
+<div class="hero-btns">
+<a href="#tool" class="btn">Try It Now</a>
+<a href="how-it-works.html" class="btn secondary">How It Works</a>
+</div>
+</section>
 
-    <footer>
-        <p>© 2026 Face Recognition Tool. All Rights Reserved.</p>
-        <p>Built by: Nithish Kumar — face detection project, Vishakapatnam.</p>
-        <a href="privacy.html">Privacy Policy</a>
-    </footer>
+<!-- ABOUT TOOL -->
+<section class="section">
+<h2>What Is This Tool?</h2>
+<p>
+This is a browser-based face recognition system that uses artificial intelligence to detect and analyze faces in real time. It runs entirely on your device using JavaScript and communicates securely with Firebase for optional storage.
+</p>
+
+<div class="features">
+<div class="card">
+<h3>Real Time Detection</h3>
+<p>Detect faces instantly through your webcam with minimal delay and high responsiveness.</p>
+</div>
+<div class="card">
+<h3>AI Powered</h3>
+<p>Uses trained machine learning models to accurately identify facial patterns and features.</p>
+</div>
+<div class="card">
+<h3>Privacy First</h3>
+<p>Your data is processed securely, and nothing is stored without explicit action.</p>
+</div>
+</div>
+</section>
+
+<!-- TOOL -->
+<section id="tool" class="section">
+<h2>Try Face Recognition Live</h2>
+<p>Allow camera access when prompted. The AI will instantly detect and analyse faces in real time.</p>
+
+<!-- EXISTING TOOL -->
+<iframe src="detect.html" style="width:100%;height:500px;border:none;"></iframe>
+</section>
+
+<div class="ad-slot"><!-- AD SLOT 2 --></div>
+
+<!-- HOW IT WORKS -->
+<section class="section">
+<h2>How Does It Work?</h2>
+<div class="steps">
+<div>1. Allow Camera Access</div>
+<div>2. AI Scans Your Face</div>
+<div>3. Detects Facial Points</div>
+<div>4. Shows Result Instantly</div>
+</div>
+<a href="how-it-works.html">Learn more →</a>
+</section>
+
+<!-- TECH -->
+<section class="section">
+<h2>Technology Behind the Tool</h2>
+<p>
+This tool is built using JavaScript and integrates AI-based face detection models directly in the browser. Firebase handles secure storage while real-time processing ensures instant results without heavy backend computation.
+</p>
+</section>
+
+<!-- CTA -->
+<section class="cta">
+<h2>Ready to Try AI Face Recognition?</h2>
+<p>Experience real-time AI detection directly in your browser.</p>
+<a href="#tool" class="btn">Launch Tool</a>
+</section>
+
+<div class="ad-slot"><!-- AD SLOT 3 --></div>
+
+<!-- FOOTER -->
+<footer>
+<div class="footer-grid">
+<div>
+<h3>FaceAI</h3>
+<p>AI-powered face recognition tool built for the modern web</p>
+</div>
+<div>
+<a href="index.html">Home</a>
+<a href="about.html">About</a>
+<a href="blog/index.html">Blog</a>
+<a href="faq.html">FAQ</a>
+</div>
+<div>
+<p>Built by [YOUR INPUT NEEDED]</p>
+<p>Hyderabad, India</p>
+</div>
+</div>
+<p>© 2026 Face Recognition Tool</p>
+</footer>
+
 </body>
 </html>
