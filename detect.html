@@ -1,42 +1,43 @@
-<body>
+<body class="detect-page">
 
 <nav class="navbar">
-<div class="logo">FaceAI</div>
-<div class="nav-links">
-<a href="index.html">Home</a>
-</div>
+    <div class="logo">FaceAI</div>
+    <div class="nav-links">
+        <a href="index.html">Home</a>
+    </div>
 </nav>
 
-<div class="container">
+<div class="detect-container">
 
-<h1>Face Verification Scanner</h1>
+    <h1 class="detect-title">AI Smart Entry System</h1>
 
-<div class="card">
-<h2>Register New User</h2>
-<p>Enter your name and scan your face.</p>
+    <!-- REGISTER -->
+    <div class="detect-card">
+        <h2>Register New User</h2>
+        <p>Enter your name and look at camera</p>
 
-<input type="text" id="user-name" placeholder="Enter Full Name">
-<button id="register-btn">Register My Face</button>
+        <input type="text" id="user-name" class="detect-input" placeholder="Enter Full Name">
+
+        <button id="register-btn" class="detect-btn">
+            Register My Face
+        </button>
+    </div>
+
+    <!-- VERIFY -->
+    <div class="detect-card">
+        <h2>Verification Scanner</h2>
+
+        <div class="video-box">
+            <video id="video" autoplay muted></video>
+        </div>
+
+        <div id="status-badge" class="status-box">
+            System Ready
+        </div>
+
+        <button id="verify-btn" class="detect-btn">
+            Start Verification
+        </button>
+    </div>
+
 </div>
-
-<div class="card">
-<h2>Verification Scanner</h2>
-
-<div id="video-wrapper">
-<video id="video" autoplay muted playsinline></video>
-</div>
-
-<div id="status-badge">Click Start to Enable Camera</div>
-
-<button id="start-camera">Start Camera</button>
-<button id="verify-btn">Start Verification</button>
-</div>
-
-</div>
-
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/face-api.js"></script>
-<script src="model.js"></script>
-
-</body>
