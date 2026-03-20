@@ -1,11 +1,8 @@
-// Firebase Configuration
+// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyDfMS7ZLuC7F-Tts4YSfiPI-Cp0yOH5xdU",
   authDomain: "my-project-5cb14.firebaseapp.com",
   projectId: "my-project-5cb14",
-  storageBucket: "my-project-5cb14.firebasestorage.app",
-  messagingSenderId: "744342131031",
-  appId: "1:744342131031:web:34a1164e779b0faa6b6e12"
 };
 
 firebase.initializeApp(firebaseConfig);
@@ -14,52 +11,56 @@ const db = firebase.firestore();
 const video = document.getElementById('video');
 const statusBadge = document.getElementById('status-badge');
 
-let cameraStarted = false; // ✅ control flag
+let cameraStarted = false;
 
-// 1. Load Models
+// LOAD MODELS
 async function loadModels() {
     statusBadge.innerText = "Loading AI Models...";
-    const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
 
-    try {
-        await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+    const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
 
-        statusBadge.innerText = "System Ready";
-    } catch (err) {
-        statusBadge.innerText = "Error loading AI models";
-        console.error(err);
-    }
+    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+    await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+    await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+
+    statusBadge.innerText = "Models Loaded";
 }
 
-// 2. Start Camera ONLY when needed
-async function startVideo() {
-    if (cameraStarted) return;
+// START CAMERA (MANUAL BUTTON)
+document.getElementById('start-camera').addEventListener('click', async () => {
 
-    statusBadge.innerText = "Starting Camera...";
+    if (cameraStarted) return;
 
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-        video.srcObject = stream;
-        cameraStarted = true;
 
+        video.srcObject = stream;
+
+        video.onloadedmetadata = () => {
+            video.play();
+        };
+
+        cameraStarted = true;
         statusBadge.innerText = "Camera Active";
+
     } catch (err) {
-        statusBadge.innerText = "Camera Access Denied";
+        statusBadge.innerText = "Camera Permission Denied";
         console.error(err);
     }
-}
+});
 
-// 3. REGISTER FACE
+// REGISTER
 document.getElementById('register-btn').addEventListener('click', async () => {
 
-    await startVideo(); // ✅ ensures camera starts
+    if (!cameraStarted) {
+        alert("Start camera first");
+        return;
+    }
 
     const name = document.getElementById('user-name').value;
-    if (!name) return alert("Enter your name first");
+    if (!name) return alert("Enter name");
 
-    statusBadge.innerText = "Scanning face...";
+    statusBadge.innerText = "Scanning...";
 
     const detection = await faceapi
         .detectSingleFace(video)
@@ -68,33 +69,27 @@ document.getElementById('register-btn').addEventListener('click', async () => {
 
     if (!detection) {
         statusBadge.innerText = "No face detected";
-        statusBadge.className = "error";
         return;
     }
 
-    const faceArray = Array.from(detection.descriptor);
+    const descriptor = Array.from(detection.descriptor);
 
-    try {
-        await db.collection("users").add({
-            name,
-            descriptor: faceArray,
-            hasEntered: false
-        });
+    await db.collection("users").add({
+        name,
+        descriptor,
+        hasEntered: false
+    });
 
-        statusBadge.innerText = `Registered: ${name}`;
-        statusBadge.className = "success";
-        document.getElementById('user-name').value = "";
-
-    } catch (error) {
-        statusBadge.innerText = "Database error";
-        console.error(error);
-    }
+    statusBadge.innerText = "Registered Successfully";
 });
 
-// 4. VERIFY FACE
+// VERIFY
 document.getElementById('verify-btn').addEventListener('click', async () => {
 
-    await startVideo(); // ✅ ensures camera starts
+    if (!cameraStarted) {
+        alert("Start camera first");
+        return;
+    }
 
     statusBadge.innerText = "Verifying...";
 
@@ -105,54 +100,32 @@ document.getElementById('verify-btn').addEventListener('click', async () => {
 
     if (!detection) {
         statusBadge.innerText = "No face detected";
-        statusBadge.className = "error";
         return;
     }
 
     const snapshot = await db.collection("users").get();
 
-    let bestMatch = {
-        name: "Unknown",
-        distance: 1.0,
-        id: null,
-        hasEntered: false
-    };
+    let bestMatch = { distance: 1 };
 
     snapshot.forEach(doc => {
-        const user = doc.data();
-        const distance = faceapi.euclideanDistance(
+        const data = doc.data();
+
+        const dist = faceapi.euclideanDistance(
             detection.descriptor,
-            user.descriptor
+            data.descriptor
         );
 
-        if (distance < 0.45 && distance < bestMatch.distance) {
-            bestMatch = {
-                name: user.name,
-                distance,
-                id: doc.id,
-                hasEntered: user.hasEntered
-            };
+        if (dist < 0.45 && dist < bestMatch.distance) {
+            bestMatch = { ...data, distance: dist };
         }
     });
 
-    if (bestMatch.name === "Unknown") {
-        statusBadge.innerText = "ACCESS DENIED";
-        statusBadge.className = "error";
+    if (!bestMatch.name) {
+        statusBadge.innerText = "Access Denied";
         return;
     }
 
-    if (bestMatch.hasEntered) {
-        statusBadge.innerText = `DENIED: ${bestMatch.name} already entered`;
-        statusBadge.className = "error";
-        return;
-    }
-
-    statusBadge.innerText = `APPROVED: Welcome ${bestMatch.name}`;
-    statusBadge.className = "success";
-
-    await db.collection("users").doc(bestMatch.id).update({
-        hasEntered: true
-    });
+    statusBadge.innerText = `Welcome ${bestMatch.name}`;
 });
 
 // INIT
