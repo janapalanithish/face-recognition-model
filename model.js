@@ -1,4 +1,3 @@
-// Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyDfMS7ZLuC7F-Tts4YSfiPI-Cp0yOH5xdU",
   authDomain: "my-project-5cb14.firebaseapp.com",
@@ -13,20 +12,20 @@ const statusBadge = document.getElementById('status-badge');
 
 let cameraStarted = false;
 
-// LOAD MODELS
+// 🔥 FAST MODEL
 async function loadModels() {
-    statusBadge.innerText = "Loading AI Models...";
+    statusBadge.innerText = "Loading Fast AI Model...";
 
     const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
 
-    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+    await faceapi.nets.tinyFaceDetector.loadFromUri(MODEL_URL);
     await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
     await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
 
-    statusBadge.innerText = "Models Loaded";
+    statusBadge.innerText = "System Ready";
 }
 
-// START CAMERA (MANUAL BUTTON)
+// CAMERA START
 document.getElementById('start-camera').addEventListener('click', async () => {
 
     if (cameraStarted) return;
@@ -44,18 +43,14 @@ document.getElementById('start-camera').addEventListener('click', async () => {
         statusBadge.innerText = "Camera Active";
 
     } catch (err) {
-        statusBadge.innerText = "Camera Permission Denied";
-        console.error(err);
+        statusBadge.innerText = "Permission Denied";
     }
 });
 
 // REGISTER
 document.getElementById('register-btn').addEventListener('click', async () => {
 
-    if (!cameraStarted) {
-        alert("Start camera first");
-        return;
-    }
+    if (!cameraStarted) return alert("Start camera first");
 
     const name = document.getElementById('user-name').value;
     if (!name) return alert("Enter name");
@@ -63,7 +58,7 @@ document.getElementById('register-btn').addEventListener('click', async () => {
     statusBadge.innerText = "Scanning...";
 
     const detection = await faceapi
-        .detectSingleFace(video)
+        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
         .withFaceDescriptor();
 
@@ -72,29 +67,24 @@ document.getElementById('register-btn').addEventListener('click', async () => {
         return;
     }
 
-    const descriptor = Array.from(detection.descriptor);
-
     await db.collection("users").add({
         name,
-        descriptor,
+        descriptor: Array.from(detection.descriptor),
         hasEntered: false
     });
 
-    statusBadge.innerText = "Registered Successfully";
+    statusBadge.innerText = "Registered";
 });
 
 // VERIFY
 document.getElementById('verify-btn').addEventListener('click', async () => {
 
-    if (!cameraStarted) {
-        alert("Start camera first");
-        return;
-    }
+    if (!cameraStarted) return alert("Start camera first");
 
     statusBadge.innerText = "Verifying...";
 
     const detection = await faceapi
-        .detectSingleFace(video)
+        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions())
         .withFaceLandmarks()
         .withFaceDescriptor();
 
@@ -115,7 +105,7 @@ document.getElementById('verify-btn').addEventListener('click', async () => {
             data.descriptor
         );
 
-        if (dist < 0.45 && dist < bestMatch.distance) {
+        if (dist < 0.5 && dist < bestMatch.distance) {
             bestMatch = { ...data, distance: dist };
         }
     });
