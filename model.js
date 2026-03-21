@@ -1,11 +1,11 @@
-// 1. Updated Firebase Config (Ensure this matches your actual project ID)
+// 1. Firebase Config
 const firebaseConfig = {
   apiKey: "AIzaSyDfMS7ZLuC7F-Tts4YSfiPI-Cp0yOH5xdU",
   authDomain: "my-project-5cb14.firebaseapp.com",
   projectId: "my-project-5cb14",
 };
 
-// Initialize Firebase correctly for compat mode
+// Initialize Firebase correctly
 if (!firebase.apps.length) {
     firebase.initializeApp(firebaseConfig);
 }
@@ -15,27 +15,31 @@ const video = document.getElementById('video');
 const statusBadge = document.getElementById('status-badge');
 let cameraStarted = false;
 
-// 2. 🔥 LOAD MODELS (Fixed URL & Error Catching)
+// 2. 🔥 THE BRAIN: Load Models
 async function loadModels() {
-    statusBadge.innerText = "Loading AI Models...";
-    // Using the official face-api.js weights repository
+    // Check if faceapi is even loaded in the browser yet
+    if (typeof faceapi === 'undefined') {
+        console.error("AI Library missing. Retrying in 1 second...");
+        setTimeout(loadModels, 1000);
+        return;
+    }
+
+    statusBadge.innerText = "Loading AI Brain...";
     const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
 
     try {
-        await Promise.all([
-            faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-            faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-            faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
-        ]);
+        await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+        await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
+        await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
         statusBadge.innerText = "System Ready ✅";
-        console.log("Models Loaded Successfully");
+        statusBadge.style.background = "#e8f0fe";
     } catch (err) {
-        statusBadge.innerText = "❌ Model Load Failed. Check Internet.";
-        console.error("Model Error:", err);
+        statusBadge.innerText = "❌ AI Models failed to load.";
+        console.error(err);
     }
 }
 
-// 🎥 START CAMERA (Updated to handle different browsers)
+// 🎥 START CAMERA
 async function startCamera() {
     try {
         const stream = await navigator.mediaDevices.getUserMedia({ video: true });
@@ -48,12 +52,11 @@ async function startCamera() {
     }
 }
 
-// Attach to button
+// Connect buttons to code
 document.getElementById('start-camera')?.addEventListener('click', startCamera);
 
 // 🔍 DETECTION HELPER
 async function getFaceDescriptor() {
-    // We add a tiny delay to ensure the video frame is ready
     const detection = await faceapi.detectSingleFace(video)
         .withFaceLandmarks()
         .withFaceDescriptor();
@@ -61,16 +64,16 @@ async function getFaceDescriptor() {
 }
 
 // 📝 REGISTER
-document.getElementById('register-btn').addEventListener('click', async () => {
+document.getElementById('register-btn')?.addEventListener('click', async () => {
     const nameInput = document.getElementById('user-name');
-    if (!cameraStarted) return alert("Please start the camera first.");
-    if (!nameInput.value) return alert("Please enter a name.");
+    if (!cameraStarted) return alert("Start camera first!");
+    if (!nameInput || !nameInput.value) return alert("Enter a name!");
 
-    statusBadge.innerText = "Processing Face...";
+    statusBadge.innerText = "Scanning Face...";
     const detection = await getFaceDescriptor();
 
     if (!detection) {
-        statusBadge.innerText = "❌ No face detected. Adjust lighting.";
+        statusBadge.innerText = "❌ Face not found. Look at camera.";
         return;
     }
 
@@ -78,11 +81,10 @@ document.getElementById('register-btn').addEventListener('click', async () => {
         await db.collection("users").add({
             name: nameInput.value,
             descriptor: Array.from(detection.descriptor),
-            hasEntered: false,
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
         statusBadge.innerText = `✅ Registered: ${nameInput.value}`;
-        nameInput.value = ""; // Clear input
+        nameInput.value = ""; 
     } catch (error) {
         statusBadge.innerText = "❌ Database Error";
         console.error(error);
@@ -90,29 +92,23 @@ document.getElementById('register-btn').addEventListener('click', async () => {
 });
 
 // ✅ VERIFY
-document.getElementById('verify-btn').addEventListener('click', async () => {
-    if (!cameraStarted) return alert("Start camera first");
+document.getElementById('verify-btn')?.addEventListener('click', async () => {
+    if (!cameraStarted) return alert("Start camera first!");
     
     statusBadge.innerText = "Searching Database...";
     const detection = await getFaceDescriptor();
 
     if (!detection) {
-        statusBadge.innerText = "❌ Stand still & look at camera";
+        statusBadge.innerText = "❌ Look at the camera.";
         return;
     }
 
     try {
         const snapshot = await db.collection("users").get();
-        if (snapshot.empty) {
-            statusBadge.innerText = "❌ No users registered yet.";
-            return;
-        }
-
         let bestMatch = { name: null, distance: 1 };
 
         snapshot.forEach(doc => {
             const data = doc.data();
-            // Create a Float32Array from the stored descriptor
             const storedDescriptor = new Float32Array(data.descriptor);
             const dist = faceapi.euclideanDistance(detection.descriptor, storedDescriptor);
 
@@ -123,16 +119,16 @@ document.getElementById('verify-btn').addEventListener('click', async () => {
 
         if (bestMatch.name) {
             statusBadge.innerText = `✅ Welcome, ${bestMatch.name}!`;
+            statusBadge.className = "success-badge"; // Make sure you have this in CSS
             statusBadge.style.background = "#d4edda";
         } else {
-            statusBadge.innerText = "❌ ACCESS DENIED: Unknown User";
+            statusBadge.innerText = "❌ ACCESS DENIED";
             statusBadge.style.background = "#f8d7da";
         }
     } catch (err) {
         statusBadge.innerText = "❌ Error fetching data";
-        console.error(err);
     }
 });
 
-// AUTO-INIT
+// INITIALIZE ON LOAD
 loadModels();
