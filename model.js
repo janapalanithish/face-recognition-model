@@ -1,141 +1,138 @@
-// Firebase Config
+// 1. Updated Firebase Config (Ensure this matches your actual project ID)
 const firebaseConfig = {
   apiKey: "AIzaSyDfMS7ZLuC7F-Tts4YSfiPI-Cp0yOH5xdU",
   authDomain: "my-project-5cb14.firebaseapp.com",
   projectId: "my-project-5cb14",
 };
 
-firebase.initializeApp(firebaseConfig);
+// Initialize Firebase correctly for compat mode
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+}
 const db = firebase.firestore();
 
 const video = document.getElementById('video');
 const statusBadge = document.getElementById('status-badge');
-
 let cameraStarted = false;
 
-// 🔥 LOAD SSD MODEL (ACCURATE)
+// 2. 🔥 LOAD MODELS (Fixed URL & Error Catching)
 async function loadModels() {
-    statusBadge.innerText = "Loading AI Model...";
-
-    const MODEL_URL = 'https://justadudewhohacks.github.io/face-api.js/models';
-
-    await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
-    await faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL);
-    await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
-
-    statusBadge.innerText = "System Ready";
-}
-
-// 🎥 START CAMERA
-document.getElementById('start-camera').addEventListener('click', async () => {
-
-    if (cameraStarted) return;
+    statusBadge.innerText = "Loading AI Models...";
+    // Using the official face-api.js weights repository
+    const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
 
     try {
-        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-
-        video.srcObject = stream;
-
-        video.onloadedmetadata = () => {
-            video.play();
-        };
-
-        cameraStarted = true;
-        statusBadge.innerText = "Camera Active";
-
+        await Promise.all([
+            faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
+            faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
+            faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
+        ]);
+        statusBadge.innerText = "System Ready ✅";
+        console.log("Models Loaded Successfully");
     } catch (err) {
-        statusBadge.innerText = "❌ Permission Denied";
+        statusBadge.innerText = "❌ Model Load Failed. Check Internet.";
+        console.error("Model Error:", err);
+    }
+}
+
+// 🎥 START CAMERA (Updated to handle different browsers)
+async function startCamera() {
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        video.srcObject = stream;
+        cameraStarted = true;
+        statusBadge.innerText = "Camera Active 📷";
+    } catch (err) {
+        statusBadge.innerText = "❌ Camera Denied";
         console.error(err);
     }
-});
+}
 
-// 🔍 DETECTION FUNCTION (SSD)
+// Attach to button
+document.getElementById('start-camera')?.addEventListener('click', startCamera);
+
+// 🔍 DETECTION HELPER
 async function getFaceDescriptor() {
-    return await faceapi
-        .detectSingleFace(video) // ✅ SSD default
+    // We add a tiny delay to ensure the video frame is ready
+    const detection = await faceapi.detectSingleFace(video)
         .withFaceLandmarks()
         .withFaceDescriptor();
+    return detection;
 }
 
 // 📝 REGISTER
 document.getElementById('register-btn').addEventListener('click', async () => {
+    const nameInput = document.getElementById('user-name');
+    if (!cameraStarted) return alert("Please start the camera first.");
+    if (!nameInput.value) return alert("Please enter a name.");
 
-    if (!cameraStarted) return alert("Start camera first");
-
-    const name = document.getElementById('user-name').value;
-    if (!name) return alert("Enter name");
-
-    statusBadge.innerText = "Scanning face...";
-
+    statusBadge.innerText = "Processing Face...";
     const detection = await getFaceDescriptor();
 
     if (!detection) {
-        statusBadge.innerText = "❌ No face detected";
+        statusBadge.innerText = "❌ No face detected. Adjust lighting.";
         return;
     }
 
-    await db.collection("users").add({
-        name,
-        descriptor: Array.from(detection.descriptor),
-        hasEntered: false
-    });
-
-    statusBadge.innerText = `✅ Registered: ${name}`;
-    statusBadge.style.background = "#d4edda";
-    statusBadge.style.color = "#155724";
+    try {
+        await db.collection("users").add({
+            name: nameInput.value,
+            descriptor: Array.from(detection.descriptor),
+            hasEntered: false,
+            timestamp: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        statusBadge.innerText = `✅ Registered: ${nameInput.value}`;
+        nameInput.value = ""; // Clear input
+    } catch (error) {
+        statusBadge.innerText = "❌ Database Error";
+        console.error(error);
+    }
 });
 
-// ✅ VERIFY (STRICT + ACCURATE)
+// ✅ VERIFY
 document.getElementById('verify-btn').addEventListener('click', async () => {
-
     if (!cameraStarted) return alert("Start camera first");
-
-    statusBadge.innerText = "Verifying...";
-
+    
+    statusBadge.innerText = "Searching Database...";
     const detection = await getFaceDescriptor();
 
     if (!detection) {
-        statusBadge.innerText = "❌ No face detected";
+        statusBadge.innerText = "❌ Stand still & look at camera";
         return;
     }
 
-    const snapshot = await db.collection("users").get();
-
-    let bestMatch = {
-        name: null,
-        distance: 1
-    };
-
-    snapshot.forEach(doc => {
-        const data = doc.data();
-
-        const dist = faceapi.euclideanDistance(
-            detection.descriptor,
-            data.descriptor
-        );
-
-        console.log("Distance:", dist); // DEBUG
-
-        // 🔥 STRICT MATCH (SSD works best here)
-        if (dist < 0.45 && dist < bestMatch.distance) {
-            bestMatch = {
-                name: data.name,
-                distance: dist
-            };
+    try {
+        const snapshot = await db.collection("users").get();
+        if (snapshot.empty) {
+            statusBadge.innerText = "❌ No users registered yet.";
+            return;
         }
-    });
 
-    if (!bestMatch.name) {
-        statusBadge.innerText = "❌ ACCESS DENIED";
-        statusBadge.style.background = "#f8d7da";
-        statusBadge.style.color = "#721c24";
-        return;
+        let bestMatch = { name: null, distance: 1 };
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            // Create a Float32Array from the stored descriptor
+            const storedDescriptor = new Float32Array(data.descriptor);
+            const dist = faceapi.euclideanDistance(detection.descriptor, storedDescriptor);
+
+            if (dist < 0.45 && dist < bestMatch.distance) {
+                bestMatch = { name: data.name, distance: dist };
+            }
+        });
+
+        if (bestMatch.name) {
+            statusBadge.innerText = `✅ Welcome, ${bestMatch.name}!`;
+            statusBadge.style.background = "#d4edda";
+        } else {
+            statusBadge.innerText = "❌ ACCESS DENIED: Unknown User";
+            statusBadge.style.background = "#f8d7da";
+        }
+    } catch (err) {
+        statusBadge.innerText = "❌ Error fetching data";
+        console.error(err);
     }
-
-    statusBadge.innerText = `✅ VERIFIED: ${bestMatch.name}`;
-    statusBadge.style.background = "#d4edda";
-    statusBadge.style.color = "#155724";
 });
 
-// INIT
+// AUTO-INIT
 loadModels();
