@@ -1,53 +1,193 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<title>Blog | FaceAI</title>
-<link rel="stylesheet" href="../styles.css">
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EDJJXY9FE2">
-</script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-EDJJXY9FE2');
-</script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Learn how face recognition technology works in 2026. A complete guide covering detection, landmark mapping, feature extraction and real world AI face recognition systems.">
+  <meta name="keywords" content="how face recognition works, face recognition technology 2026, AI face detection, face recognition explained, facial recognition system">
+  <meta name="author" content="FaceAI">
+  <meta property="og:title" content="How Face Recognition Technology Works in 2026 — A Complete Guide | FaceAI">
+  <meta property="og:description" content="A complete beginner-friendly guide explaining how face recognition technology works in 2026, from detection to identification.">
+  <meta property="og:url" content="https://face-recognition-model.vercel.app/blog/article1.html">
+  <meta property="og:type" content="article">
+  <title>How Face Recognition Technology Works in 2026 — A Complete Guide | FaceAI</title>
+  <link rel="canonical" href="https://face-recognition-model.vercel.app/blog/article1.html">
+  <link rel="stylesheet" href="../styles.css">
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-EDJJXY9FE2"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-EDJJXY9FE2');
+  </script>
 </head>
-
 <body>
 
-<nav class="navbar">
-<div class="logo">FaceAI</div>
-<div class="nav-links">
-<a href="../index.html">Home</a>
-<a href="../blog/index.html" class="active">Blog</a>
-</div>
-</nav>
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="logo">FaceAI</div>
+    <div class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="../how-it-works.html">How It Works</a>
+      <a href="index.html" class="active">Blog</a>
+      <a href="../faq.html">FAQ</a>
+      <a href="../about.html">About</a>
+      <a href="../contact.html">Contact</a>
+      <a href="../privacy-policy.html">Privacy Policy</a>
+    </div>
+  </nav>
 
-<section class="section">
-<h1>Blog — Face Recognition Insights</h1>
+  <!-- ARTICLE CONTENT -->
+  <main class="section">
+    <article>
 
-<div class="features">
+      <h1>How Face Recognition Technology Works in 2026 — A Complete Guide</h1>
+      <p><em>Published: March 2026 &nbsp;|&nbsp; Author: FaceAI Team</em></p>
 
-<div class="card">
-<h3>How Face Recognition Technology Works in 2026</h3>
-<a href="article1.html" class="btn">Read More</a>
-</div>
+      <p>
+        Face recognition technology has become one of the most talked-about applications of 
+        artificial intelligence in recent years. It powers everything from your smartphone's 
+        unlock feature to airport security systems and banking verification tools. Yet despite 
+        how widely it is used, most people have only a vague understanding of what is actually 
+        happening behind the scenes when a system recognises a face. This guide explains the 
+        complete process in plain language — from the moment a camera captures an image to the 
+        final identification result — so you can understand exactly how this technology works 
+        and why it has become so powerful.
+      </p>
 
-<div class="card">
-<h3>Face Detection vs Face Recognition</h3>
-<a href="article2.html" class="btn">Read More</a>
-</div>
+      <h2>What Is Face Recognition?</h2>
+      <p>
+        Face recognition is a form of biometric identification that uses the unique physical 
+        characteristics of a person's face to verify or identify their identity. Unlike passwords 
+        or ID cards, your face is something you always carry with you and cannot easily forget or 
+        lose. This makes it an attractive option for secure, convenient authentication across 
+        many different contexts.
+      </p>
+      <p>
+        At its core, face recognition works by converting a photograph or video frame of a face 
+        into a numerical representation — sometimes called a face embedding — and then comparing 
+        that representation against stored data. If the comparison produces a match above a 
+        certain confidence threshold, the system identifies the person. The entire process can 
+        happen in a fraction of a second on modern hardware, making it practical for real-time 
+        applications like door access control or phone unlocking.
+      </p>
 
-<div class="card">
-<h3>5 Real World Applications of Face Recognition</h3>
-<a href="article3.html" class="btn">Read More</a>
-<p>Want to understand the full process? <a href="../how-it-works.html">Learn how it works</a>.</p>
-</div>
+      <h2>Step 1 — Face Detection</h2>
+      <p>
+        Before any recognition can happen, the system first needs to locate the face within the 
+        image. This step is called face detection, and it is a separate process from recognition. 
+        Detection algorithms scan the image for patterns that match the general structure of a 
+        human face — the position of eyes, nose, and mouth in relation to each other. Modern 
+        detection models powered by convolutional neural networks can locate faces in milliseconds, 
+        even in challenging conditions such as low lighting, partial occlusion, or extreme angles. 
+        The output of this step is a bounding box — a rectangle that marks exactly where the 
+        face is located in the image.
+      </p>
 
-</div>
+      <h2>Step 2 — Face Alignment</h2>
+      <p>
+        Once a face has been detected, the system normalises it to ensure consistency before 
+        further processing. This involves rotating and scaling the face so that key features 
+        like the eyes always appear at the same relative positions. This alignment step is 
+        important because recognition models are trained on standardised face images, and 
+        presenting a tilted or off-centre face would reduce accuracy significantly. The aligned 
+        face is then cropped from the original image and passed to the next stage of processing.
+      </p>
 
-</section>
+      <h2>Step 3 — Facial Landmark Detection</h2>
+      <p>
+        After alignment, the system identifies specific points on the face called landmarks. 
+        These are precise locations such as the corners of the eyes, the tip of the nose, 
+        the corners of the mouth, and the outline of the jaw. A typical landmark detection 
+        model identifies between 68 and 468 such points across the face. These landmarks 
+        serve as reference points for extracting the unique measurements that differentiate 
+        one person's face from another. The distances and angles between these landmarks 
+        create a geometric map of the face that remains relatively consistent regardless 
+        of expression or minor variations in lighting.
+      </p>
+
+      <h2>Step 4 — Feature Extraction and Face Embedding</h2>
+      <p>
+        This is the most technically sophisticated step in the pipeline. A deep neural network 
+        — typically based on architectures like ResNet or MobileNet — processes the aligned 
+        face image and produces a compact numerical vector, usually containing 128 to 512 
+        numbers, that represents the unique characteristics of that face. This vector is called 
+        a face embedding. Faces that belong to the same person produce embeddings that are 
+        mathematically close to each other, while faces of different people produce embeddings 
+        that are far apart. The neural network learns these relationships during training by 
+        processing millions of face image pairs.
+      </p>
+
+      <h2>Step 5 — Matching and Identification</h2>
+      <p>
+        The final step is comparison. The face embedding generated from the input image is 
+        compared against embeddings stored in a database. The comparison is done by calculating 
+        the mathematical distance between vectors — typically using cosine similarity or 
+        Euclidean distance. If the distance between the input embedding and a stored embedding 
+        falls below a defined threshold, the system declares a match. In verification systems, 
+        the result is a yes or no answer — does this face match this specific stored identity? 
+        In identification systems, the input face is compared against all stored profiles and 
+        the closest match above the threshold is returned as the result.
+      </p>
+
+      <h2>How Our Tool Uses This Technology</h2>
+      <p>
+        Our FaceAI tool implements this complete pipeline directly in your web browser using 
+        JavaScript and a pre-trained face detection and landmark model. When you grant camera 
+        access, the tool captures your video stream and runs detection and landmark analysis 
+        on each frame in real time. The processing happens entirely on your device — no video 
+        is sent to any external server during detection. Firebase is used only for optional 
+        data storage when you choose to save results. This approach keeps the tool fast, 
+        private, and accessible without requiring any downloads or installations.
+      </p>
+
+      <h2>Conclusion</h2>
+      <p>
+        Face recognition technology works through a carefully designed sequence of steps — 
+        detection, alignment, landmark mapping, feature extraction, and matching — each 
+        building on the previous one to produce a reliable identification result. What once 
+        required expensive specialised hardware can now run in real time on a standard 
+        smartphone or laptop browser. As the underlying AI models continue to improve and 
+        become more accessible, face recognition will become an even more integral part of 
+        how we interact with technology in everyday life. Understanding how it works helps 
+        us use it more thoughtfully and make informed decisions about privacy and security.
+      </p>
+
+      <a href="../index.html#tool" class="btn">Try the Face Recognition Tool</a>
+      <p>Want to know where this technology is used? 
+        <a href="article3.html">Read our real world applications article</a>.
+      </p>
+
+    </article>
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="footer-content">
+      <div class="footer-left">
+        <h3>FaceAI</h3>
+        <p>AI-powered face recognition tool built for the modern web.</p>
+      </div>
+      <div class="footer-middle">
+        <h4>Quick Links</h4>
+        <a href="../index.html">Home</a>
+        <a href="../about.html">About</a>
+        <a href="index.html">Blog</a>
+        <a href="../faq.html">FAQ</a>
+        <a href="../privacy-policy.html">Privacy Policy</a>
+        <a href="../contact.html">Contact</a>
+      </div>
+      <div class="footer-right">
+        <p>Built by [Your Name]</p>
+        <p>Final Year Engineering Student</p>
+        <p>Hyderabad, India</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2026 FaceAI. All Rights Reserved.</p>
+    </div>
+  </footer>
 
 </body>
 </html>
