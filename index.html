@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="description" content="Free AI-powered face recognition tool. Detect faces instantly using your webcam with real-time processing and secure Firebase integration.">
 <meta name="keywords" content="face recognition tool, AI face detection, webcam face scanner, face API JS, biometric tool">
-<meta name="author" content="Your Name">
+<meta name="author" content="Nithish Kumar">
 <meta property="og:title" content="AI Face Recognition Tool">
 <meta property="og:description" content="Free AI-powered face recognition tool with real-time detection.">
 <meta property="og:url" content="https://face-recognition-model.vercel.app/">
@@ -14,8 +14,7 @@
 <link rel="canonical" href="https://face-recognition-model.vercel.app/">
 <link rel="stylesheet" href="styles.css">
 <!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EDJJXY9FE2">
-</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EDJJXY9FE2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -23,13 +22,12 @@
   gtag('config', 'G-EDJJXY9FE2');
 </script>
 <script>
-// Ad visibility control
 const params = new URLSearchParams(window.location.search);
 const DEMO_MODE = params.get('demo') === 'true';
 window.addEventListener('DOMContentLoaded',()=>{
-if (DEMO_MODE) {
-document.querySelectorAll('.ad-slot').forEach(ad=>ad.style.display='none');
-}
+  if (DEMO_MODE) {
+    document.querySelectorAll('.ad-slot').forEach(ad=>ad.style.display='none');
+  }
 });
 </script>
 </head>
@@ -38,112 +36,196 @@ document.querySelectorAll('.ad-slot').forEach(ad=>ad.style.display='none');
 
 <!-- NAVBAR -->
 <nav class="navbar">
-<div class="logo">FaceAI</div>
-<div class="nav-links">
-<a href="index.html" class="active">Home</a>
-<a href="how-it-works.html">How It Works</a>
-<a href="blog/index.html">Blog</a>
-<a href="faq.html">FAQ</a>
-<a href="about.html">About</a>
-<a href="contact.html">Contact</a>
-<a href="privacy-policy.html">Privacy</a>
-</div>
+  <div class="logo">FaceAI</div>
+  <div class="nav-links">
+    <a href="index.html" class="active">Home</a>
+    <a href="how-it-works.html">How It Works</a>
+    <a href="blog/index.html">Blog</a>
+    <a href="faq.html">FAQ</a>
+    <a href="about.html">About</a>
+    <a href="contact.html">Contact</a>
+    <a href="privacy-policy.html">Privacy</a>
+  </div>
 </nav>
 
 <div class="ad-slot"><!-- AD SLOT 1 --></div>
 
 <!-- HERO -->
 <section class="hero">
-<h1>AI-Powered Face Recognition — Instant, Accurate, Free</h1>
-<p>
-This tool lets you detect and verify faces instantly using your webcam. Built using modern AI models and real-time processing, it delivers fast and reliable results without requiring downloads, accounts, or complex setup.
-</p>
-<div class="hero-btns">
-<a href="#tool" class="btn">Try It Now</a>
-<a href="how-it-works.html" class="btn secondary">How It Works</a>
-</div>
+  <h1>AI-Powered Face Recognition — Instant, Accurate, Free</h1>
+  <p>
+    This tool lets you detect and verify faces instantly using your webcam. 
+    Built using modern AI models and real-time processing, it delivers fast 
+    and reliable results without requiring downloads, accounts, or complex setup. 
+    Simply open the tool, allow camera access, and experience AI face detection 
+    working live in your browser within seconds.
+  </p>
+  <div class="hero-btns">
+    <a href="#tool" class="btn">Try It Now</a>
+    <a href="how-it-works.html" class="btn secondary">How It Works</a>
+  </div>
 </section>
 
 <!-- ABOUT TOOL -->
 <section class="section">
-<h2>What Is This Tool?</h2>
-<p>
-This is a browser-based face recognition system that uses artificial intelligence to detect and analyze faces in real time. It runs entirely on your device using JavaScript and communicates securely with Firebase for optional storage.
-</p>
+  <h2>What Is This Tool?</h2>
+  <p>
+    FaceAI is a browser-based face recognition system that uses artificial 
+    intelligence to detect and analyze faces in real time. It runs entirely 
+    on your device using JavaScript and communicates securely with Firebase 
+    for optional storage. Unlike traditional face recognition systems that 
+    require expensive hardware or complex installations, this tool works 
+    directly in any modern web browser on both desktop and mobile devices. 
+    No account is needed to use the basic detection features.
+  </p>
 
-<div class="features">
-<div class="card">
-<h3>Real Time Detection</h3>
-<p>Detect faces instantly through your webcam with minimal delay and high responsiveness.</p>
-</div>
-<div class="card">
-<h3>AI Powered</h3>
-<p>Uses trained machine learning models to accurately identify facial patterns and features.</p>
-</div>
-<div class="card">
-<h3>Privacy First</h3>
-<p>Your data is processed securely, and nothing is stored without explicit action.</p>
-</div>
-</div>
+  <div class="features">
+    <div class="card">
+      <h3>Real Time Detection</h3>
+      <p>Detect faces instantly through your webcam with minimal delay and 
+      high responsiveness. The AI model processes each video frame in 
+      milliseconds, giving you smooth and accurate real-time results.</p>
+    </div>
+    <div class="card">
+      <h3>AI Powered</h3>
+      <p>Uses trained machine learning models to accurately identify facial 
+      patterns and features. The underlying models are optimised for 
+      browser performance without sacrificing detection accuracy.</p>
+    </div>
+    <div class="card">
+      <h3>Privacy First</h3>
+      <p>Your data is processed securely on your own device. Nothing is 
+      stored or transmitted without your explicit action. Your webcam 
+      stream never leaves your browser during detection.</p>
+    </div>
+  </div>
 </section>
 
-<section class="section">
-<h2>Try Face Recognition</h2>
-<p>Click below to open the live AI face detection tool.</p>
-
-<a href="detect.html" class="btn">Launch Face Detection</a>
+<!-- TOOL LAUNCH -->
+<section class="section" id="tool">
+  <h2>Try Face Recognition Live</h2>
+  <p>
+    Allow camera access when prompted. The AI will instantly detect and 
+    analyse faces in real time. No images are stored without your 
+    permission. Works best in Chrome or Firefox on desktop. Make sure 
+    you are in a well-lit environment for the most accurate detection results.
+  </p>
+  <a href="detect.html" class="btn">Launch Face Detection</a>
 </section>
 
 <div class="ad-slot"><!-- AD SLOT 2 --></div>
 
 <!-- HOW IT WORKS -->
 <section class="section">
-<h2>How Does It Work?</h2>
-<div class="steps">
-<div>1. Allow Camera Access</div>
-<div>2. AI Scans Your Face</div>
-<div>3. Detects Facial Points</div>
-<div>4. Shows Result Instantly</div>
-</div>
-<a href="how-it-works.html">Learn more →</a>
+  <h2>How Does It Work?</h2>
+  <p>
+    The face recognition process happens in four simple steps, all running 
+    directly inside your browser without any server processing required.
+  </p>
+  <div class="steps">
+    <div>
+      <strong>1. Allow Camera Access</strong>
+      <p>Your browser requests permission to use your webcam. 
+      This is required for the AI to access the live video stream 
+      for detection.</p>
+    </div>
+    <div>
+      <strong>2. AI Scans Your Face</strong>
+      <p>The machine learning model continuously scans each frame 
+      of the video stream, looking for facial patterns and structures 
+      in real time.</p>
+    </div>
+    <div>
+      <strong>3. Detects Facial Points</strong>
+      <p>Once a face is found, the AI maps key facial landmarks — 
+      eyes, nose, mouth, and jawline — to create a detailed 
+      facial profile.</p>
+    </div>
+    <div>
+      <strong>4. Shows Result Instantly</strong>
+      <p>Detection results appear on screen immediately with 
+      bounding boxes around detected faces and confidence 
+      scores for each detection.</p>
+    </div>
+  </div>
+  <a href="how-it-works.html">Learn the full technical process →</a>
 </section>
 
 <!-- TECH -->
 <section class="section">
-<h2>Technology Behind the Tool</h2>
-<p>
-This tool is built using JavaScript and integrates AI-based face detection models directly in the browser. Firebase handles secure storage while real-time processing ensures instant results without heavy backend computation.
-</p>
+  <h2>Technology Behind the Tool</h2>
+  <p>
+    This tool is built using vanilla JavaScript and integrates AI-based 
+    face detection models that run directly in the browser using the 
+    device's own processing power. This approach means no data is sent 
+    to external servers during the detection process, making it both 
+    fast and privacy-friendly. Firebase handles secure optional storage 
+    and authentication, while real-time processing ensures instant 
+    results without heavy backend computation. The entire application 
+    is deployed on Vercel for fast, reliable global access with 
+    zero downtime.
+  </p>
+  <p>
+    The face detection models used in this tool are optimised for 
+    web performance, capable of processing live video streams at 
+    high frame rates while maintaining accuracy across different 
+    lighting conditions, face angles, and skin tones. This makes 
+    the tool suitable for a wide range of real-world use cases 
+    including attendance systems, identity verification demos, 
+    and AI learning projects.
+  </p>
+</section>
+
+<!-- USE CASES -->
+<section class="section">
+  <h2>Who Can Use This Tool?</h2>
+  <p>
+    FaceAI is designed for anyone curious about how face recognition 
+    technology works in practice. Engineering students can use it as 
+    a reference implementation for AI projects. Developers can explore 
+    how browser-based ML models work in real applications. Educators 
+    can demonstrate face detection concepts live in a classroom. 
+    Businesses can use it as a prototype to understand how face 
+    recognition could be integrated into their own systems. 
+    No technical knowledge is required to use the tool — 
+    just a camera and a modern browser.
+  </p>
 </section>
 
 <!-- CTA -->
 <section class="cta">
-<h2>Ready to Try AI Face Recognition?</h2>
-<p>Experience real-time AI detection directly in your browser.</p>
-<a href="#tool" class="btn">Launch Tool</a>
+  <h2>Ready to Try AI Face Recognition?</h2>
+  <p>
+    Experience real-time AI face detection directly in your browser. 
+    Free to use, no downloads required, and no account needed to get started.
+  </p>
+  <a href="detect.html" class="btn">Launch Tool Now</a>
 </section>
 
 <div class="ad-slot"><!-- AD SLOT 3 --></div>
 
 <!-- FOOTER -->
 <footer>
-<div class="footer-grid">
-<div>
-<h3>FaceAI</h3>
-<p>AI-powered face recognition tool built for the modern web</p>
-</div>
-<div>
-<a href="index.html">Home</a>
-<a href="about.html">About</a>
-<a href="blog/index.html">Blog</a>
-<a href="faq.html">FAQ</a>
-</div>
-<div>
-<p>Built by nithish kumar</p>
-<p>vizag, India</p>
-</div>
-</div>
-<p>© 2026 Face Recognition Tool</p>
+  <div class="footer-grid">
+    <div>
+      <h3>FaceAI</h3>
+      <p>AI-powered face recognition tool built for the modern web</p>
+    </div>
+    <div>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="blog/index.html">Blog</a>
+      <a href="faq.html">FAQ</a>
+      <a href="privacy-policy.html">Privacy Policy</a>
+      <a href="contact.html">Contact</a>
+    </div>
+    <div>
+      <p>Built by Nithish Kumar</p>
+      <p>Final Year Engineering Student</p>
+      <p>Hyderabad, India</p>
+    </div>
+  </div>
+  <p>© 2026 FaceAI. All Rights Reserved.</p>
 </footer>
 
 </body>
