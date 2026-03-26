@@ -17,7 +17,6 @@ let cameraStarted = false;
 
 // 2. 🔥 THE BRAIN: Load Models
 async function loadModels() {
-    // Check if faceapi is even loaded in the browser yet
     if (typeof faceapi === 'undefined') {
         console.error("AI Library missing. Retrying in 1 second...");
         setTimeout(loadModels, 1000);
@@ -52,7 +51,6 @@ async function startCamera() {
     }
 }
 
-// Connect buttons to code
 document.getElementById('start-camera')?.addEventListener('click', startCamera);
 
 // 🔍 DETECTION HELPER
@@ -63,7 +61,7 @@ async function getFaceDescriptor() {
     return detection;
 }
 
-// 📝 REGISTER
+// 📝 REGISTER (NOW WITH DUPLICATE PROTECTION)
 document.getElementById('register-btn')?.addEventListener('click', async () => {
     const nameInput = document.getElementById('user-name');
     if (!cameraStarted) return alert("Start camera first!");
@@ -78,12 +76,39 @@ document.getElementById('register-btn')?.addEventListener('click', async () => {
     }
 
     try {
+        // --- NEW LOGIC: PRE-REGISTRATION CHECK ---
+        statusBadge.innerText = "Verifying uniqueness...";
+        const snapshot = await db.collection("users").get();
+        let alreadyExists = false;
+        let existingName = "";
+
+        snapshot.forEach(doc => {
+            const data = doc.data();
+            const storedDescriptor = new Float32Array(data.descriptor);
+            const dist = faceapi.euclideanDistance(detection.descriptor, storedDescriptor);
+
+            // If match found (dist < 0.45), person is already in the system
+            if (dist < 0.45) {
+                alreadyExists = true;
+                existingName = data.name;
+            }
+        });
+
+        if (alreadyExists) {
+            statusBadge.innerText = `❌ REJECTED: Face belongs to "${existingName}"`;
+            statusBadge.style.background = "#f8d7da";
+            return; // Exit function so we DON'T add the duplicate
+        }
+        // --- END OF CHECK ---
+
+        // Proceed only if face is unique
         await db.collection("users").add({
             name: nameInput.value,
             descriptor: Array.from(detection.descriptor),
             timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
-        statusBadge.innerText = `✅ Registered: ${nameInput.value}`;
+        statusBadge.innerText = `✅ Success! Registered: ${nameInput.value}`;
+        statusBadge.style.background = "#d4edda";
         nameInput.value = ""; 
     } catch (error) {
         statusBadge.innerText = "❌ Database Error";
@@ -119,7 +144,6 @@ document.getElementById('verify-btn')?.addEventListener('click', async () => {
 
         if (bestMatch.name) {
             statusBadge.innerText = `✅ Welcome, ${bestMatch.name}!`;
-            statusBadge.className = "success-badge"; // Make sure you have this in CSS
             statusBadge.style.background = "#d4edda";
         } else {
             statusBadge.innerText = "❌ ACCESS DENIED";
@@ -130,5 +154,4 @@ document.getElementById('verify-btn')?.addEventListener('click', async () => {
     }
 });
 
-// INITIALIZE ON LOAD
 loadModels();
