@@ -1,13 +1,9 @@
 {
-  "headers": [
+  "redirects": [
     {
-      "source": "/sitemap.xml",
-      "headers": [
-        {
-          "key": "Content-Type",
-          "value": "application/xml"
-        }
-      ]
+      "source": "/(.*)",
+      "destination": "https://recognizemai.me/$1",
+      "permanent": true
     }
   ]
 }
