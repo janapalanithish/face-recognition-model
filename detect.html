@@ -3,11 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Face Detection</title>
+<title>Face Detection | RecognizeMe AI</title>
 <link rel="canonical" href="https://www.recognizemeai.me/detect.html">
-<!-- Google Analytics -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-EDJJXY9FE2">
-</script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-EDJJXY9FE2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
@@ -20,30 +18,28 @@
 <body class="detect-page">
 
 <nav class="navbar">
-    <div class="logo">FaceAI</div>
+    <div class="logo">RecognizeMe AI</div>
     <div class="nav-links">
-        <a href="/" class="active">Home</a>
-        <a href="how-it-works.html">How It Works</a>
-        <a href="blog/index.html">Blog</a>
-        <a href="faq.html">FAQ</a>
-        <a href="about.html">About</a>
-        <a href="contact.html">Contact</a>
-        <a href="privacy-policy.html">Privacy</a>
+        <a href="https://www.recognizemeai.me/">Home</a>
+        <a href="https://www.recognizemeai.me/how-it-works.html">How It Works</a>
+        <a href="https://www.recognizemeai.me/blog/index.html">Blog</a>
+        <a href="https://www.recognizemeai.me/faq.html">FAQ</a>
+        <a href="https://www.recognizemeai.me/about.html">About</a>
+        <a href="https://www.recognizemeai.me/contact.html">Contact</a>
+        <a href="https://www.recognizemeai.me/privacy-policy.html">Privacy</a>
     </div>
 </nav>
 
-<div class="detect-container">
+<main class="detect-container">
 
     <h1 class="detect-title">AI Smart Entry System</h1>
 
-    <!-- REGISTER -->
     <div class="detect-card">
         <h2>Register New User</h2>
         <p>Enter your name and look at camera</p>
 
         <input type="text" id="user-name" class="detect-input" placeholder="Enter Full Name">
 
-        <!-- 🔥 ADD THIS BUTTON -->
         <button id="start-camera" class="detect-btn">Start Camera</button>
 
         <button id="register-btn" class="detect-btn">
@@ -51,7 +47,6 @@
         </button>
     </div>
 
-    <!-- VERIFY -->
     <div class="detect-card">
         <h2>Verification Scanner</h2>
 
@@ -68,14 +63,38 @@
         </button>
     </div>
 
-</div>
+</main>
+
+<div class="ad-slot"></div>
+
+<footer>
+  <div class="footer-grid">
+    <div>
+      <h3>RecognizeMe AI</h3>
+      <p>AI-powered face recognition tool built for the modern web</p>
+    </div>
+    <div>
+      <a href="https://www.recognizemeai.me/">Home</a>
+      <a href="https://www.recognizemeai.me/how-it-works.html">How It Works</a>
+      <a href="https://www.recognizemeai.me/blog/index.html">Blog</a>
+      <a href="https://www.recognizemeai.me/faq.html">FAQ</a> 
+      <a href="https://www.recognizemeai.me/about.html">About</a>
+      <a href="https://www.recognizemeai.me/contact.html">Contact</a>
+      <a href="https://www.recognizemeai.me/privacy-policy.html">Privacy Policy</a>
+    </div>
+    <div>
+      <p>Built by Nithish Kumar</p>
+      <p>Final Year Engineering Student</p>
+      <p>Hyderabad, India</p>
+    </div>
+  </div>
+  <p>© 2026 RecognizeMe AI. All Rights Reserved.</p>
+</footer>
 
 <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-
-    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
-
-    <script src="model.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
+<script src="model.js"></script>
 
 </body>
 </html>
