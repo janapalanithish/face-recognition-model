@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>How It Works | RecognizeMe AI Technology</title>
+    <meta name="description" content="Learn about the AI technology behind RecognizeMe AI, including face detection, landmark mapping, and secure local processing.">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="canonical" href="https://www.recognizemeai.me/how-it-works.html">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">RecognizeMe AI</div>
+        <div class="nav-links">
+            <a href="https://www.recognizemeai.me/">Home</a>
+            <a href="https://www.recognizemeai.me/how-it-works.html" class="active">How It Works</a>
+            <a href="https://www.recognizemeai.me/blog/index.html">Blog</a>
+            <a href="https://www.recognizemeai.me/author.html">Author</a>
+            <a href="https://www.recognizemeai.me/legal/privacy-policy.html">Privacy</a>
+        </div>
+    </nav>
+
+    <main class="section" style="max-width: 900px; margin: 40px auto; padding: 0 20px; line-height: 1.8;">
+        <h1 style="text-align: center; font-size: 2.5rem; margin-bottom: 20px;">The Technology Behind RecognizeMe AI</h1>
+        <p style="text-align: center; color: #666; font-size: 1.1rem; margin-bottom: 40px;">Understanding how our browser-based AI identifies and verifies identity in real-time.</p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 40px;">
+            
+            <div style="background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h3 style="color: #2ecc71;">01. Face Detection</h3>
+                <p>When you start the tool, your browser uses a <strong>Convolutional Neural Network (CNN)</strong> to scan your webcam feed. It looks for specific patterns of light and shadow that represent a human face.</p>
+            </div>
+
+            <div style="background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h3 style="color: #2ecc71;">02. Landmark Mapping</h3>
+                <p>Once a face is found, the AI identifies <strong>68 unique landmarks</strong>. These include the contours of your jawline, the distance between your eyes, and the shape of your nose and mouth.</p>
+            </div>
+
+            <div style="background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h3 style="color: #2ecc71;">03. Feature Extraction</h3>
+                <p>The AI converts these visual landmarks into a <strong>Mathematical Descriptor</strong> (a vector of 128 numbers). This "faceprint" is unique to you, much like a digital fingerprint.</p>
+            </div>
+
+            <div style="background: #fff; padding: 25px; border-radius: 8px; border: 1px solid #eee; box-shadow: 0 2px 10px rgba(0,0,0,0.05);">
+                <h3 style="color: #2ecc71;">04. Verification</h3>
+                <p>The system compares your live descriptor against the one stored in your <strong>Firebase Firestore</strong> database. If the mathematical distance between them is small enough, the AI confirms a match.</p>
+            </div>
+        </div>
+
+        <div style="background: #f4f7f6; padding: 30px; border-radius: 12px; margin-top: 50px; text-align: center;">
+            <h2>Privacy-First Processing</h2>
+            <p>Unlike other AI tools, RecognizeMe AI processes all data <strong>client-side</strong>. This means your video stream never leaves your computer. The AI calculations happen in your browser using your device's GPU/CPU power.</p>
+        </div>
+    </main>
+
+    <footer>
+        <div style="text-align: center; padding: 20px; border-top: 1px solid #eee; margin-top: 40px;">
+            <p>© 2026 RecognizeMe AI | Authored by Nithish Janapala</p>
+            <p>
+               <a href="https://www.recognizemeai.me/legal/privacy-policy.html">Privacy Policy</a> | 
+               <a href="https://www.recognizemeai.me/legal/terms-and-conditions.html">Terms and Conditions</a>
+            </p>
+        </div>
+    </footer>
+
+</body>
+</html>
