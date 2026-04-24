@@ -20,7 +20,10 @@
     <loc>https://www.recognizemeai.me/blog/index.html</loc>
     <priority>0.7</priority>
   </url>
-
+  <url>
+    <loc>https://www.recognizemeai.me/contact.html</loc>
+    <priority>0.7</priority>
+  </url>
   <url>
     <loc>https://www.recognizemeai.me/about.html</loc>
     <priority>0.6</priority>
@@ -29,11 +32,6 @@
     <loc>https://www.recognizemeai.me/faq.html</loc>
     <priority>0.6</priority>
   </url>
-  <url>
-  <loc>https://www.recognizemeai.me/contact.html</loc>
-  <priority>0.7</priority>
-</url>
-
   <url>
     <loc>https://www.recognizemeai.me/legal/privacy-policy.html</loc>
     <priority>0.4</priority>
@@ -53,4 +51,14 @@
   <url><loc>https://www.recognizemeai.me/blog/article8.html</loc><priority>0.5</priority></url>
   <url><loc>https://www.recognizemeai.me/blog/article9.html</loc><priority>0.5</priority></url>
   <url><loc>https://www.recognizemeai.me/blog/article10.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article11.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article12.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article13.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article14.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article15.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article16.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article17.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article18.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article19.html</loc><priority>0.5</priority></url>
+  <url><loc>https://www.recognizemeai.me/blog/article20.html</loc><priority>0.5</priority></url>
 </urlset>
