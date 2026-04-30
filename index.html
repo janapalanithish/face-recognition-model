@@ -6,21 +6,15 @@
 <meta name="description" content="RecognizeMe AI: A student-led research hub for real-time AI face recognition, biometric security analysis, and computer vision ethics. Created by Nithish Janapala.">
 <meta name="keywords" content="face recognition tool, AI face detection, biometric research, Nithish Janapala, TensorFlow.js, face-api.js, computer vision student project">
 <meta name="author" content="Nithish Janapala">
-
-<link rel="canonical" href="https://www.recognizemeai.me/index.html" />
-
+<link rel="canonical" href="https://www.recognizemeai.me/blog/index.html">
 <meta name="google-adsense-account" content="ca-pub-7128726044496368">
 <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7128726044496368" crossorigin="anonymous"></script>
-
 <meta property="og:title" content="AI Face Recognition Hub | RecognizeMe AI">
 <meta property="og:description" content="Explore real-time AI face detection and biometric research by student developer Nithish Janapala.">
-<meta property="og:url" content="https://www.recognizemeai.me/index.html">
+<meta property="og:url" content="https://www.recognizemeai.me/blog/index.html">
 <meta property="og:type" content="website">
-
 <title>AI Face Recognition Hub | RecognizeMe AI | Biometric Research</title>
-
 <link rel="stylesheet" href="styles.css">
-
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-EDJJXY9FE2"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
@@ -28,7 +22,6 @@
   gtag('js', new Date());
   gtag('config', 'G-EDJJXY9FE2');
 </script>
-
 <script>
 const params = new URLSearchParams(window.location.search);
 const DEMO_MODE = params.get('demo') === 'true';
@@ -39,9 +32,7 @@ window.addEventListener('DOMContentLoaded',()=>{
 });
 </script>
 </head>
-
 <body>
-  
 <nav class="navbar">
     <div class="logo">RecognizeMe AI</div>
     <div class="nav-links">
@@ -53,26 +44,22 @@ window.addEventListener('DOMContentLoaded',()=>{
         <a href="https://www.recognizemeai.me/legal/privacy-policy.html">Privacy</a>
     </div>
 </nav>
-
 <div class="ad-slot" style="min-height: 90px; margin: 10px 0; border: 1px dashed #eee; text-align: center;">
     <small style="color:#ccc">Advertisement Space</small>
 </div>
-
 <section class="hero">
   <h1>AI-Powered Face Recognition — Student Research & Real-Time Detection</h1>
   <p>
     Welcome to <strong>RecognizeMe AI</strong>, a specialized hub developed by student researcher <strong>Nithish Janapala</strong>. 
     This tool allows you to detect and verify faces instantly using your webcam through advanced neural networks. 
     By utilizing real-time processing and the <strong>TensorFlow.js</strong> ecosystem, it delivers reliable biometric 
-    results directly in the browser. Simply open the tool on <strong>recognizemeai.me</strong>, allow camera access, 
-    and witness AI face detection working live without the need for high-end server-side processing.
+    results directly in the browser. Witness AI face detection working live without the need for high-end server-side processing.
   </p>
   <div class="hero-btns">
-    <a href="#tool" class="btn">Try Detection Now</a>
-    <a href="how-it-works.html" class="btn secondary">Technical Specs</a>
+    <a href="https://www.recognizemeai.me/detect.html" class="btn">Try Detection Now</a>
+    <a href="https://www.recognizemeai.me/how-it-works.html" class="btn secondary">Technical Specs</a>
   </div>
 </section>
-
 <section class="section">
   <h2>What is RecognizeMe AI?</h2>
   <p>
@@ -82,12 +69,10 @@ window.addEventListener('DOMContentLoaded',()=>{
     with Firebase only for optional cloud-based verification features. 
   </p>
   <p>
-    Unlike traditional biometrics that rely on expensive hardware, this project demonstrates how <strong>WebAssembly (WASM)</strong> 
-    and GPU acceleration can bring enterprise-grade AI to any modern smartphone or desktop browser. My goal is to 
-    provide an open-access platform where educators, developers, and students can see AI ethics and biometric 
-    security in action.
+    Unlike traditional biometrics, this project demonstrates how <strong>WebAssembly (WASM)</strong> 
+    and GPU acceleration can bring enterprise-grade AI to any modern smartphone browser. My goal is to 
+    provide an open-access platform where educators and students can see AI ethics in action.
   </p>
-
   <div class="features">
     <div class="card">
       <h3>Neural Architecture</h3>
@@ -103,23 +88,20 @@ window.addEventListener('DOMContentLoaded',()=>{
     </div>
   </div>
 </section>
-
 <section class="section" id="tool" style="background-color: #f9f9f9; border-radius: 10px; padding: 30px;">
   <h2>Experience Face Recognition Live</h2>
   <p>
     To begin the demo, ensure you are in a well-lit environment. When you click the launch button, your browser 
     will request webcam permission. This stream is processed locally; <strong>no video or images are sent to our 
-    servers</strong> during the live detection phase. This demonstrates the power of local AI in the modern web stack.
+    servers</strong>. This demonstrates the power of local AI in the modern web stack.
   </p>
   <div style="text-align:center;">
-    <a href="detect.html" class="btn">Launch Face Detection Tool</a>
+    <a href="https://www.recognizemeai.me/detect.html" class="btn">Launch Face Detection Tool</a>
   </div>
 </section>
-
 <div class="ad-slot" style="min-height: 250px; margin: 20px 0; border: 1px dashed #eee; text-align: center;">
     <small style="color:#ccc">Advertisement Space</small>
 </div>
-
 <section class="section">
   <h2>Methodology: How Does it Work?</h2>
   <p>
@@ -129,11 +111,11 @@ window.addEventListener('DOMContentLoaded',()=>{
   <div class="steps">
     <div>
       <strong>1. Buffer Acquisition</strong>
-      <p>We use the MediaDevices API to capture raw video buffers, which are then passed through a pre-processing filter to normalize brightness and contrast.</p>
+      <p>We use the MediaDevices API to capture raw video buffers, which are then passed through a pre-processing filter to normalize brightness.</p>
     </div>
     <div>
       <strong>2. Feature Inference</strong>
-      <p>The neural network scans the frame for patterns that match facial structures, isolating the bounding box coordinates using a lightweight detector model.</p>
+      <p>The neural network scans the frame for patterns that match facial structures, isolating the bounding box coordinates using a lightweight detector.</p>
     </div>
     <div>
       <strong>3. Landmark Mapping</strong>
@@ -144,48 +126,38 @@ window.addEventListener('DOMContentLoaded',()=>{
       <p>Finally, the AI assigns a probability score. If the detection meets a threshold of 0.85 or higher, the UI renders the detection result instantly.</p>
     </div>
   </div>
-  <a href="blog/complete-guide-to-face-recognition.html">View Detailed Technical Documentation →</a>
+  <a href="https://www.recognizemeai.me/blog/complete-guide-to-face-recognition.html">View Detailed Technical Documentation →</a>
 </section>
-
 <section class="section">
   <h2>Advanced Technology Stack</h2>
   <p>
     This project is built using <strong>Vanilla JavaScript</strong> and <strong>Face-API.js</strong>, integrating AI models 
-    that leverage your device's own CPU and GPU power. This serverless approach to AI means that the tool is both 
-    highly scalable and incredibly fast. For users who choose to explore our identification features, we integrate 
-    <strong>Google Firebase</strong> for secure data handling and encrypted storage.
+    that leverage your device's own CPU and GPU power. This serverless approach means the tool is both 
+    highly scalable and incredibly fast. For users choosing to explore identification features, we integrate 
+    <strong>Google Firebase</strong> for secure data handling.
   </p>
   <p>
-    In my research, I have focused on optimizing these models for various skin tones and environmental conditions 
-    to reduce the "bias gap" often found in commercial facial recognition software. This makes RecognizeMe AI 
-    an ideal starting point for developers looking to understand the ethical implications of biometric technology 
-    in the 21st century.
+    In my research, I focused on optimizing models for various skin tones to reduce the "bias gap" often found in 
+    commercial facial recognition. This makes RecognizeMe AI an ideal starting point for developers.
   </p>
 </section>
-
 <section class="section">
   <h2>Target Audience & Use Cases</h2>
   <p>
-    RecognizeMe AI serves as a multifaceted resource for the global tech community. For <strong>Engineering Students</strong>, 
-    it is a reference implementation of AI-on-the-web. For <strong>Cybersecurity Researchers</strong>, it is a tool 
+    RecognizeMe AI serves as a multifaceted resource for the tech community. For <strong>Engineering Students</strong>, 
+    it is a reference of AI-on-the-web. For <strong>Cybersecurity Researchers</strong>, it is a tool 
     to test the limits of biometric liveness detection. For <strong>Educators</strong>, it is a visual aid to 
-    explain how neural networks perceive human features. Whether you are a business looking for a lightweight 
-    prototype or a curious enthusiast, our platform offers the insights you need to understand the future of identity.
+    explain how neural networks perceive features.
   </p>
 </section>
-
 <section class="cta">
   <h2>Ready to Explore the Future of AI?</h2>
-  <p>
-    Access real-time biometric analysis now. No downloads, no subscriptions, just research-driven technology.
-  </p>
-  <a href="detect.html" class="btn">Launch Research Tool</a>
+  <p>Access real-time biometric analysis now. No downloads, just research-driven technology.</p>
+  <a href="https://www.recognizemeai.me/detect.html" class="btn">Launch Research Tool</a>
 </section>
-
 <div class="ad-slot" style="min-height: 250px; margin: 20px 0; border: 1px dashed #eee; text-align: center;">
     <small style="color:#ccc">Advertisement Space</small>
 </div>
-
 <footer>
     <div style="text-align: center; padding: 40px; border-top: 1px solid #eee; margin-top: 40px;">
         <p><strong>© 2026 RecognizeMe AI | A Research Project by Nithish Janapala</strong></p>
@@ -194,9 +166,8 @@ window.addEventListener('DOMContentLoaded',()=>{
            <a href="https://www.recognizemeai.me/legal/privacy-policy.html">Privacy Policy</a> | 
            <a href="https://www.recognizemeai.me/legal/terms-and-conditions.html">Terms and Conditions</a>
         </p>
-        <p style="font-size: 11px; color: #777;">RecognizeMe AI uses cookies for analytics and personalized advertising to support research development.</p>
+        <p style="font-size: 11px; color: #777;">RecognizeMe AI uses cookies for analytics and personalized advertising.</p>
     </div>
 </footer>
-
 </body>
 </html>
