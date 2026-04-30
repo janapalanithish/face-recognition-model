@@ -5,7 +5,7 @@ const verifyBtn = document.getElementById('verify-btn');
 const statusBadge = document.getElementById('status-badge');
 const userNameInput = document.getElementById('user-name');
 
-// 1. Load the AI Models from your 'models' folder
+// 1. Load the AI Models
 async function loadModels() {
     statusBadge.innerText = "Loading AI Models...";
     try {
@@ -31,17 +31,17 @@ startCameraBtn.addEventListener('click', async () => {
     }
 });
 
-// 3. Register Face (With Duplicate Prevention)
+// 3. Register Face (Strict Unique Verification)
 registerBtn.addEventListener('click', async () => {
-    const label = userNameInput.value;
+    const label = userNameInput.value.trim();
     if (!label) {
         alert("Please enter a name first!");
         return;
     }
 
     statusBadge.innerText = "Scanning Face...";
+    statusBadge.style.background = "#ffc107"; // Yellow while scanning
     
-    // Capture the face descriptor
     const detections = await faceapi.detectSingleFace(video)
         .withFaceLandmarks()
         .withFaceDescriptor();
@@ -54,50 +54,47 @@ registerBtn.addEventListener('click', async () => {
     const currentDescriptor = detections.descriptor;
 
     try {
-        // --- DUPLICATE CHECK LOGIC ---
-        // Fetch existing users from Firebase 'users' collection
+        // --- STEP 1: FETCH DATA ---
         const snapshot = await db.collection('users').get();
-        let isDuplicate = false;
-        let existingName = "";
+        let matchFound = false;
+        let matchedName = "";
 
+        // --- STEP 2: COMPARE ---
         snapshot.forEach(doc => {
             const data = doc.data();
-            // Convert saved array back to Float32Array for comparison
             const savedDescriptor = new Float32Array(Object.values(data.descriptor));
-            
-            // Calculate distance (Euclidean)
             const distance = faceapi.euclideanDistance(currentDescriptor, savedDescriptor);
             
-            // 0.45 threshold (smaller = more strict match)
-            if (distance < 0.45) { 
-                isDuplicate = true;
-                existingName = data.name;
+            // 0.40 is very strict—it effectively blocks the same person
+            if (distance < 0.40) { 
+                matchFound = true;
+                matchedName = data.name;
             }
         });
 
-        if (isDuplicate) {
-            statusBadge.innerText = "Denied: Face Already Registered";
+        // --- STEP 3: STOP IF DUPLICATE ---
+        if (matchFound) {
+            statusBadge.innerText = "Registration Denied";
             statusBadge.style.background = "#dc3545"; // Red
-            alert(`Registration Failed: This person is already registered as "${existingName}".`);
-            return;
+            alert(`STOP: This face is already registered under the name: ${matchedName}`);
+            return; // CRITICAL: This prevents the code below from ever running
         }
 
-        // --- SAVE NEW USER LOGIC ---
+        // --- STEP 4: SAVE ONLY IF NEW ---
         await db.collection('users').add({
             name: label,
-            descriptor: Array.from(currentDescriptor), // Arrays are safer for Firebase
+            descriptor: Array.from(currentDescriptor),
             timestamp: new Date()
         });
 
-        statusBadge.innerText = `Success: ${label} Registered!`;
+        statusBadge.innerText = `Welcome, ${label}! Registered.`;
         statusBadge.style.background = "#28a745"; // Green
-        console.log("New descriptor saved for:", label);
+        userNameInput.value = ""; // Clear input
 
     } catch (error) {
         console.error("Database Error:", error);
-        statusBadge.innerText = "Database Error";
+        statusBadge.innerText = "Connection Error";
     }
 });
 
-// Initialize the models on page load
 loadModels();
