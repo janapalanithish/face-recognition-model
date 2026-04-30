@@ -40,7 +40,7 @@ registerBtn.addEventListener('click', async () => {
     }
 
     statusBadge.innerText = "Scanning Face...";
-    statusBadge.style.background = "#ffc107"; // Yellow while scanning
+    statusBadge.style.background = "#ffc107";
     
     const detections = await faceapi.detectSingleFace(video)
         .withFaceLandmarks()
@@ -56,31 +56,25 @@ registerBtn.addEventListener('click', async () => {
     try {
         // --- STEP 1: FETCH DATA ---
         const snapshot = await db.collection('users').get();
-        let matchFound = false;
-        let matchedName = "";
 
-        // --- STEP 2: COMPARE ---
-        snapshot.forEach(doc => {
+        // --- STEP 2: COMPARE (Using FOR...OF to allow real STOPPING) ---
+        for (const doc of snapshot.docs) {
             const data = doc.data();
             const savedDescriptor = new Float32Array(Object.values(data.descriptor));
             const distance = faceapi.euclideanDistance(currentDescriptor, savedDescriptor);
             
-            // 0.40 is very strict—it effectively blocks the same person
+            // 0.40 is strict - if distance is less, it's the same person
             if (distance < 0.40) { 
-                matchFound = true;
-                matchedName = data.name;
+                statusBadge.innerText = "Registration Denied";
+                statusBadge.style.background = "#dc3545"; // Red
+                alert(`STOP: This face is already registered under the name: ${data.name}`);
+                
+                // THIS RETURN STOPS THE ENTIRE FUNCTION IMMEDIATELY
+                return; 
             }
-        });
-
-        // --- STEP 3: STOP IF DUPLICATE ---
-        if (matchFound) {
-            statusBadge.innerText = "Registration Denied";
-            statusBadge.style.background = "#dc3545"; // Red
-            alert(`STOP: This face is already registered under the name: ${matchedName}`);
-            return; // CRITICAL: This prevents the code below from ever running
         }
 
-        // --- STEP 4: SAVE ONLY IF NEW ---
+        // --- STEP 3: SAVE ONLY IF LOOP FINISHED WITHOUT A MATCH ---
         await db.collection('users').add({
             name: label,
             descriptor: Array.from(currentDescriptor),
@@ -89,7 +83,7 @@ registerBtn.addEventListener('click', async () => {
 
         statusBadge.innerText = `Welcome, ${label}! Registered.`;
         statusBadge.style.background = "#28a745"; // Green
-        userNameInput.value = ""; // Clear input
+        userNameInput.value = ""; 
 
     } catch (error) {
         console.error("Database Error:", error);
