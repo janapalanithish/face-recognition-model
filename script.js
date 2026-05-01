@@ -5,6 +5,9 @@ const verifyBtn = document.getElementById('verify-btn');
 const statusBadge = document.getElementById('status-badge');
 const userNameInput = document.getElementById('user-name');
 
+// New variable to track who has entered during THIS specific session (until refresh)
+let verifiedUsersInSession = [];
+
 // 1. Load the AI Models
 async function loadModels() {
     statusBadge.innerText = "Loading AI Models...";
@@ -31,7 +34,7 @@ startCameraBtn.addEventListener('click', async () => {
     }
 });
 
-// 3. Register Face (Strict Unique Verification)
+// 3. Register Face (Permanent Database Check)
 registerBtn.addEventListener('click', async () => {
     const label = userNameInput.value.trim();
     if (!label) {
@@ -42,9 +45,7 @@ registerBtn.addEventListener('click', async () => {
     statusBadge.innerText = "Scanning Face...";
     statusBadge.style.background = "#ffc107";
     
-    const detections = await faceapi.detectSingleFace(video)
-        .withFaceLandmarks()
-        .withFaceDescriptor();
+    const detections = await faceapi.detectSingleFace(video).withFaceLandmarks().withFaceDescriptor();
 
     if (!detections) {
         statusBadge.innerText = "No Face Detected";
@@ -54,40 +55,93 @@ registerBtn.addEventListener('click', async () => {
     const currentDescriptor = detections.descriptor;
 
     try {
-        // --- STEP 1: FETCH DATA ---
         const snapshot = await db.collection('users').get();
 
-        // --- STEP 2: COMPARE (Using FOR...OF to allow real STOPPING) ---
+        // Check if this face already exists in the database
         for (const doc of snapshot.docs) {
             const data = doc.data();
             const savedDescriptor = new Float32Array(Object.values(data.descriptor));
             const distance = faceapi.euclideanDistance(currentDescriptor, savedDescriptor);
             
-            // 0.40 is strict - if distance is less, it's the same person
             if (distance < 0.40) { 
                 statusBadge.innerText = "Registration Denied";
-                statusBadge.style.background = "#dc3545"; // Red
-                alert(`STOP: This face is already registered under the name: ${data.name}`);
-                
-                // THIS RETURN STOPS THE ENTIRE FUNCTION IMMEDIATELY
+                statusBadge.style.background = "#dc3545";
+                alert(`STOP: This face is already in the database as: ${data.name}`);
                 return; 
             }
         }
 
-        // --- STEP 3: SAVE ONLY IF LOOP FINISHED WITHOUT A MATCH ---
+        // Save new user
         await db.collection('users').add({
             name: label,
             descriptor: Array.from(currentDescriptor),
             timestamp: new Date()
         });
 
-        statusBadge.innerText = `Welcome, ${label}! Registered.`;
-        statusBadge.style.background = "#28a745"; // Green
+        statusBadge.innerText = `Success: ${label} Registered!`;
+        statusBadge.style.background = "#28a745";
         userNameInput.value = ""; 
 
     } catch (error) {
         console.error("Database Error:", error);
-        statusBadge.innerText = "Connection Error";
+        statusBadge.innerText = "Database Error";
+    }
+});
+
+// 4. Verify Face (Session-Based Catching)
+verifyBtn.addEventListener('click', async () => {
+    statusBadge.innerText = "Verifying...";
+    statusBadge.style.background = "#ffc107";
+
+    const detections = await faceapi.detectSingleFace(video).withFaceLandmarks().withFaceDescriptor();
+
+    if (!detections) {
+        statusBadge.innerText = "No Face Detected";
+        return;
+    }
+
+    const currentDescriptor = detections.descriptor;
+
+    try {
+        const snapshot = await db.collection('users').get();
+        let matchFound = false;
+        let matchedName = "";
+
+        // Find who this person is
+        for (const doc of snapshot.docs) {
+            const data = doc.data();
+            const savedDescriptor = new Float32Array(Object.values(data.descriptor));
+            const distance = faceapi.euclideanDistance(currentDescriptor, savedDescriptor);
+
+            if (distance < 0.40) { 
+                matchFound = true;
+                matchedName = data.name;
+                break; 
+            }
+        }
+
+        if (matchFound) {
+            // Check if they already entered during this session
+            if (verifiedUsersInSession.includes(matchedName)) {
+                statusBadge.innerText = "DENIED: Already Verified";
+                statusBadge.style.background = "#dc3545";
+                alert(`Caught! ${matchedName}, you have already been verified once.`);
+                return; 
+            }
+
+            // Success - First time entry
+            statusBadge.innerText = `Welcome, ${matchedName}!`;
+            statusBadge.style.background = "#28a745";
+            verifiedUsersInSession.push(matchedName); // Log their name for this session
+
+        } else {
+            statusBadge.innerText = "Not Found in System";
+            statusBadge.style.background = "#6c757d";
+        }
+
+    } catch (error) {
+        console.error("Verification Error:", error);
+        statusBadge.innerText = "System Error";
     }
 });
 
