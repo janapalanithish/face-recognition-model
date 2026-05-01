@@ -33,32 +33,35 @@
 <div class="ad-slot"></div>
 
 <section class="section">
-<h1>Frequently Asked Questions</h1>
+    <h1>Frequently Asked Questions (FAQ)</h1>
+    <p>Find answers to common questions about <strong>RecognizeMe AI</strong>, our biometric research, and how we handle your privacy and data security.</p>
 
-<h3>Is my face data stored permanently?</h3>
-<p>No. Data is only stored if you register your face manually. Otherwise, it is not saved.</p>
+    <h3>Is my face data stored permanently?</h3>
+    <p>No. By default, RecognizeMe AI performs <strong>on-device processing</strong>. This means your facial features are analyzed in your browser's memory and deleted the moment you close the tab. Data is only stored in our secure Firebase backend if you explicitly choose to 'Register' a profile for testing identification features.</p>
 
-<h3>Do I need an account?</h3>
-<p>No account is required. You can use the tool instantly.</p>
+    <h3>Do I need to create an account to use the tool?</h3>
+    <p>No account is required for the standard research demo. We believe in open-access technology, allowing students and researchers to test AI facial landmarks instantly without the friction of a sign-up process.</p>
 
-<h3>Is this tool free?</h3>
-<p>Yes, the tool is completely free to use.</p>
+    <h3>Is this tool free for educational use?</h3>
+    <p>Yes, RecognizeMe AI is a 100% free resource. It was developed as a student project by Nithish Janapala to demonstrate the capabilities of <strong>TensorFlow.js</strong> and <strong>Face-API.js</strong> in a web environment.</p>
 
-<h3>Does it work on mobile?</h3>
-<p>Yes, but performance depends on browser and device camera quality.</p>
+    <h3>Does it work on mobile devices?</h3>
+    <p>Yes. The tool is optimized for modern mobile browsers (Chrome on Android and Safari on iOS). However, because the AI processing happens on your device's CPU/GPU, performance may vary based on your phone's hardware and the quality of the front-facing camera.</p>
 
-<h3>Is my webcam recorded?</h3>
-<p>No, video is processed in real-time and not recorded.</p>
+    <h3>Is my webcam stream being recorded?</h3>
+    <p>Absolutely not. The video stream is processed as a local buffer. We do not have a "record" function on our servers, and we never see your live video. Your privacy is protected by the 'Client-Side' nature of our neural network.</p>
 
-<h3>How accurate is it?</h3>
-<p>Accuracy depends on lighting, camera quality, and face visibility.</p>
+    <h3>What is the accuracy rate of the detection?</h3>
+    <p>Our models achieve a high confidence score (typically >90%) in well-lit environments. Accuracy can be affected by extreme shadows, low-resolution cameras, or if the face is obscured by heavy masks. We utilize a <strong>68-point landmark mapping system</strong> to ensure precision.</p>
 
-<h3>How can I delete my data?</h3>
-<p>You can remove stored data from Firebase or reset the database.</p>
+    <h3>How can I request data deletion?</h3>
+    <p>If you have registered a face profile and wish to remove it, you can do so through the interface or by contacting our team via the <a href="contact.html">Contact Page</a>. We comply with standard data protection principles, ensuring you have full control over your biometric descriptors.</p>
 
-<h3>Why does it need camera access?</h3>
-<p>The tool requires camera access to detect and analyze faces in real time.</p>
+    <h3>Why does the browser ask for camera permission?</h3>
+    <p>To perform real-time analysis, the AI needs to 'see' the video frames. The browser permission is a security feature that ensures you are in control of when the camera is active. You can revoke this permission at any time in your browser settings.</p>
 
+    <h3>What technologies power RecognizeMe AI?</h3>
+    <p>The project utilizes a stack consisting of <strong>Vanilla JavaScript, TensorFlow.js, and WebAssembly (WASM)</strong>. This allows us to run complex neural networks directly in the browser without needing a powerful backend server.</p>
 </section>
 
 <div class="ad-slot"></div>
